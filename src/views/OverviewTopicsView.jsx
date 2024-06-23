@@ -2,9 +2,15 @@ import data from "../assets/data.js";
 import TopicCard from "../components/TopicCard.jsx";
 import PrimaryButton from "../components/PrimaryButton.jsx";
 import { useState } from "react";
+import Modal from "../components/Modal.jsx";
 
 export default function Topics() {
   const [topics, setTopics] = useState(data);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  function toggleModal() {
+    setModalIsOpen(!modalIsOpen);
+  }
 
   return (
     <>
@@ -14,7 +20,7 @@ export default function Topics() {
         </span>
         <h1 className="text-center text-2xl">Alle Themen</h1>
         <div className="w-1/3 text-end">
-          <PrimaryButton text="Neues Thema" />
+          <PrimaryButton text="Neues Thema" clickHandler={toggleModal}/>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
@@ -27,6 +33,7 @@ export default function Topics() {
           />
         ))}
       </div>
+      <Modal isOpen={modalIsOpen} toggleModal={toggleModal} saveText="Speichern" />
     </>
   );
 }

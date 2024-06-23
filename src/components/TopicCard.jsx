@@ -11,7 +11,7 @@ export default function TopicCard({ topicName, topicId, questionCount }) {
       <div>{topicName}</div>
       <FontAwesomeIcon
         icon={faPenToSquare}
-        className="card__edit-icon absolute text-gray-500"
+        className="card__edit-icon absolute hover:cursor-pointer"
         onClick={() => navigate(`/edit-topic/${topicId}`)}
       />
       <span className="absolute topic-card__number text-gray-500">
