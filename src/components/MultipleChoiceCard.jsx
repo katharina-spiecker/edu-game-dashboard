@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
-export default function MultipleChoiceCard({ content, toggleModal }) {
+export default function MultipleChoiceCard({ content, openModal }) {
   
     return (
         <div className="bg-white shadow shadow-slate-300 p-4 relative rounded-2xl mb-7">
@@ -24,7 +24,7 @@ export default function MultipleChoiceCard({ content, toggleModal }) {
             <FontAwesomeIcon
                 icon={faPenToSquare}
                 className="card__edit-icon absolute hover:cursor-pointer"
-                onClick={toggleModal}
+                onClick={openModal}
             />
             
         </div>
