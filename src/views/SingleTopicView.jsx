@@ -10,27 +10,63 @@ export default function SingleTopicView() {
     const { id } = useParams();
 
     const topic = data.find((topic) => topic.id === id);
-
     const [modalIsOpen, setModalIsOpen] = useState(false);
-
-    // const [answers, setAnswers] = useState([]);
-    const [question, setQuestion] = useState("");
     const [mode, setMode] = useState(null);
-    const [editContent, setEditContent] = useState(null);
+    const [quizIndex, setQuizIndex] = useState(null);
+    const [editQuizContent, setEditQuizContent] = useState(null);
 
     function openModal(mode = "", index = null ) {
         if (mode === "edit") {
-            // set correct object to editModal
-            setEditContent(topic.quiz[index]);
+            setQuizIndex(index);
+            setEditQuizContent(topic.quiz[index]);
         }
         setMode(mode);
         setModalIsOpen(true);
     }
 
-    function closeModal() {
+    function saveEditHandler() {
+        // save
+        topic.quiz[quizIndex] = editQuizContent;
+        // reset
+        resetModal();
+    }
+
+    function saveNewHandler() {
+        // save
+        resetModal();
+    }
+
+    function resetModal() {
         setModalIsOpen(false);
         setMode(null);
-        setEditContent(null);
+        setQuizIndex(null);
+        setEditQuizContent(null);
+    }
+
+    function updateQuestion(newText) {
+        // update question, copy existing answers
+        setEditQuizContent(
+            {
+                question: newText,
+                answers: [...editQuizContent.answers]
+            }
+        )
+    }
+
+    function updateAnswer(index, newText) {
+        // save updated answers
+        setEditQuizContent((prevState) => {
+            // make deep clone of existing answers (deep clone necessary since array of objects)
+            const updatedAnswers = structuredClone(prevState.answers);
+
+            // update text
+            updatedAnswers[index].text = newText;
+
+            return {
+                question: prevState.question,
+                answers: updatedAnswers
+            }
+        });
     }
 
     return (
@@ -51,20 +87,31 @@ export default function SingleTopicView() {
             }
             {/* new question modal */}
             {
-                mode === "edit" && editContent ? (
-                    <Modal isOpen={modalIsOpen} closeModal={closeModal} saveText="Änderungen Speichern">
-                        <h3>Frage bearbeiten</h3>
-                        <TextInput id="question" label="Frage" value={editContent.question} />
+                mode === "edit" ? (
+                    <Modal isOpen={modalIsOpen} closeModal={resetModal} saveHandler={saveEditHandler} saveText="Änderungen Speichern">
+                        <h3 className="mb-3 font-semibold">Frage bearbeiten</h3>
+                        <TextInput
+                            id="question"
+                            label="Frage"
+                            defaultValue={editQuizContent.question}
+                            changeHandler={(newText) => updateQuestion(newText)}
+                            />
                         {
-                            editContent.answers.map((answer, index) => 
-                                <TextInput key={index} id={"antwort-" + (index + 1)} label={"Antwort " + (index + 1)} value={answer.text} />
+                            editQuizContent.answers.map((answer, index) => 
+                                <TextInput
+                                    key={index}
+                                    id={"antwort-" + (index + 1)}
+                                    label={"Antwort " + (index + 1)}
+                                    defaultValue={answer.text}
+                                    changeHandler={(newText) => updateAnswer(index, newText)}
+                                />
                             )
                         }
                     </Modal>
                 ) : (
-                    <Modal isOpen={modalIsOpen} closeModal={closeModal} saveText="Speichern">
+                    <Modal isOpen={modalIsOpen} closeModal={resetModal} saveText="Speichern" saveHandler={saveNewHandler}>
                         <h3>Frage hinzufügen</h3>
-                        <TextInput id="question" label="Frage" value={question} />
+                        <TextInput id="question" label="Frage" />
                     </Modal>
                 )
             }
