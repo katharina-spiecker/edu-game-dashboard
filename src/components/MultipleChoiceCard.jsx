@@ -2,6 +2,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
+/**
+ * MultipleChoiceCard component
+ * 
+ * Diese Komponente erzeugt eine Box 
+ * welche eine Quizfrage, die Antwortmöglichkeiten,
+ * und welche Frage richtig ist darstellt.
+ * 
+ * @component
+ * @param {Object} content 
+ * @param {Function} openModal
+ */
 export default function MultipleChoiceCard({ content, openModal }) {
   
     return (

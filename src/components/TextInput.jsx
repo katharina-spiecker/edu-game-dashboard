@@ -1,3 +1,15 @@
+
+/**
+ * TextInput component
+ * 
+ * Diese Komponente stellt ein Text Inputfeld bereit.
+ * 
+ * @component
+ * @param {string} label 
+ * @param {number} id
+ * @param {string} defaultValue
+ * @param {Function} changeHandler
+ */
 export default function TextInput({ label, id, defaultValue, changeHandler }) {
     return (
         <>

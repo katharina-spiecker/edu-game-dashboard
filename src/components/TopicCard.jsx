@@ -3,6 +3,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * TopicCard component
+ * 
+ * Diese Komponente zeigt ein Quizthema an.
+ * Es wird der Quizname, die Anzahl an Fragen in dem Quiz
+ * und ein Bearbeiten icon angezeigt, welches zu der Übersicht
+ * aller Fragen von diesem Quizthema leitet.
+ *  
+ * 
+ * @component.
+ * @param {string} topicName
+ * @param {number} topicId 
+ * @param {number} questionCount 
+ */
 export default function TopicCard({ topicName, topicId, questionCount }) {
   const navigate = useNavigate();
 
