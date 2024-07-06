@@ -5,12 +5,12 @@
  * Diese Komponente stellt ein Text Inputfeld bereit.
  * 
  * @component
- * @param {string} label 
- * @param {number} id
- * @param {string} defaultValue
- * @param {Function} changeHandler
+ * @param {string} label Input Label
+ * @param {number} id Input id
+ * @param {string} defaultValue Input Standardwert
+ * @param {Function} changeHandler wird beim change Event aufgerufen
  */
-export default function TextInput({ label, id, defaultValue, changeHandler }) {
+function TextInput({ label, id, defaultValue, changeHandler }) {
     return (
         <>
             <label htmlFor={id} className="block pb-2">{label}</label>
@@ -23,3 +23,5 @@ export default function TextInput({ label, id, defaultValue, changeHandler }) {
         </>
     )
 }
+
+export default TextInput;

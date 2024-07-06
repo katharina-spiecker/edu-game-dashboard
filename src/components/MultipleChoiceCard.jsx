@@ -10,10 +10,10 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
  * und welche Frage richtig ist darstellt.
  * 
  * @component
- * @param {Object} content 
- * @param {Function} openModal
+ * @param {Object} content besteht aus der Eigenschaft answers
+ * @param {Function} openModal öffnet das Bearbeiten-Modal mit Frage und Antworten
  */
-export default function MultipleChoiceCard({ content, openModal }) {
+function MultipleChoiceCard({ content, openModal }) {
   
     return (
         <div className="bg-white shadow shadow-slate-300 p-4 relative rounded-2xl mb-7">
@@ -41,3 +41,5 @@ export default function MultipleChoiceCard({ content, openModal }) {
         </div>
     )
 }
+
+export default MultipleChoiceCard;

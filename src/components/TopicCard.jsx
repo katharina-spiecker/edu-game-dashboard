@@ -13,11 +13,11 @@ import { useNavigate } from "react-router-dom";
  *  
  * 
  * @component.
- * @param {string} topicName
- * @param {number} topicId 
- * @param {number} questionCount 
+ * @param {string} topicName Name des Themas
+ * @param {number} topicId Themen Id
+ * @param {number} questionCount Anzahl der Mehrfachauswahlfragen des Themas
  */
-export default function TopicCard({ topicName, topicId, questionCount }) {
+function TopicCard({ topicName, topicId, questionCount }) {
   const navigate = useNavigate();
 
   return (
@@ -34,3 +34,5 @@ export default function TopicCard({ topicName, topicId, questionCount }) {
     </div>
   );
 }
+
+export default TopicCard;

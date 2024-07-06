@@ -4,7 +4,14 @@ import PrimaryButton from "../components/PrimaryButton.jsx";
 import { useState } from "react";
 import Modal from "../components/Modal.jsx";
 
-export default function Topics() {
+/**
+ * OverviewTopicsView component
+ * 
+ * Diese View Komponente generiert die Themenübersicht Seite.
+ * 
+ * @component
+ */
+function OverviewTopicsView() {
   const [topics, setTopics] = useState(data);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -37,3 +44,5 @@ export default function Topics() {
     </>
   );
 }
+
+export default OverviewTopicsView;

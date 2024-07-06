@@ -14,13 +14,13 @@ import {ReactNode} from 'react'; // used in jsdoc
  * und kann somit an Aufrufstelle befüllt werden.
  * 
  * @component
- * @param {boolean} isOpen
- * @param {Function} closeModal
- * @param {string} saveText 
- * @param {ReactNode} children
- * @param {Function} saveHandler
+ * @param {boolean} isOpen Modal geöffnet oder geschlossen
+ * @param {Function} closeModal Funktion, welche zum Schließen aufgerufen wird
+ * @param {string} saveText Text welcher in dem PrimaryButton erscheint
+ * @param {ReactNode} children Inhalt des Modals
+ * @param {Function} saveHandler Funktion, welche beim Klick auf den PrimaryButton aufgerufen wird
  */
-export default function Modal({ isOpen, closeModal, saveText, children, saveHandler }) {
+function Modal({ isOpen, closeModal, saveText, children, saveHandler }) {
   return (
     <>
       {isOpen && (
@@ -47,3 +47,5 @@ export default function Modal({ isOpen, closeModal, saveText, children, saveHand
     </>
   );
 }
+
+export default Modal;
