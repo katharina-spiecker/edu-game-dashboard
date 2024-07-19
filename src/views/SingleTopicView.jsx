@@ -4,7 +4,9 @@ import MultipleChoiceCard from "../components/MultipleChoiceCard.jsx";
 import PrimaryButton from "../components/PrimaryButton.jsx";
 import Modal from "../components/Modal.jsx";
 import { useState } from "react";
-import TextInput from "../components/TextInput.jsx";
+import TextArea from "../components/TextArea.jsx";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /**
  * SingleTopicView component
@@ -75,6 +77,29 @@ function SingleTopicView() {
     });
   }
 
+  function updateCorrectAnswer(index) {
+    // save updated answers
+    setEditQuizContent((prevState) => {
+      // make deep clone of existing answers (deep clone necessary since array of objects)
+      const updatedAnswers = structuredClone(prevState.answers);
+
+      // nur eine Antwort kann richtig sein
+      // setzte alle auf false, außer die, die neu ausgewählt wurde
+      updatedAnswers.forEach((answer, answerIndex) => {
+        if (index === answerIndex) {
+          answer.correct = true;
+        } else {
+          answer.correct = false;
+        }
+      });
+
+      return {
+        question: prevState.question,
+        answers: updatedAnswers,
+      };
+    });
+  }
+
   return (
     <>
       <div className="flex items-center justify-between mx-auto mb-7">
@@ -104,20 +129,30 @@ function SingleTopicView() {
           saveHandler={saveEditHandler}
           saveText="Änderungen Speichern">
           <h3 className="mb-3 font-semibold">Frage bearbeiten</h3>
-          <TextInput
+          <TextArea
             id="question"
             label="Frage"
             defaultValue={editQuizContent.question}
             changeHandler={(newText) => updateQuestion(newText)}
           />
           {editQuizContent.answers.map((answer, index) => (
-            <TextInput
+            <div
+              className="flex items-center"
               key={index}
-              id={"antwort-" + (index + 1)}
-              label={"Antwort " + (index + 1)}
-              defaultValue={answer.text}
-              changeHandler={(newText) => updateAnswer(index, newText)}
-            />
+            >
+              <button
+                onClick={() => updateCorrectAnswer(index)}
+                className="rounded-full border w-6 h-6 flex items-center justify-center me-2 cursor-pointer"
+                disabled={answer.correct}>
+                <FontAwesomeIcon className={answer.correct ? "text-green-700" : "text-gray-200"} icon={faCheck} /> 
+              </button>
+              <TextArea
+                id={"antwort-" + (index + 1)}
+                label={"Antwort " + (index + 1)}
+                defaultValue={answer.text}
+                changeHandler={(newText) => updateAnswer(index, newText)}
+              />
+            </div>
           ))}
         </Modal>
       ) : (
@@ -127,7 +162,7 @@ function SingleTopicView() {
           saveText="Speichern"
           saveHandler={saveNewHandler}>
           <h3>Frage hinzufügen</h3>
-          <TextInput id="question" label="Frage" />
+          <TextArea id="question" label="Frage" />
         </Modal>
       )}
     </>
