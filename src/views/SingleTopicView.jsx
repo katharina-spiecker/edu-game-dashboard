@@ -19,7 +19,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function SingleTopicView() {
   const { id } = useParams();
 
-  const topic = data.find((topic) => topic.id === id);
+  const topic = data.find((topic) => topic.id == id);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mode, setMode] = useState(null);
   const [quizIndex, setQuizIndex] = useState(null);
@@ -88,10 +88,11 @@ function SingleTopicView() {
     resetModal();
   }
 
+  /**
+   * Saves edited quiz item.
+   */
   function saveEditHandler() {
-    // save
     topic.quiz[quizIndex] = editQuizContent;
-    // reset
     resetModal();
   }
 
@@ -110,14 +111,17 @@ function SingleTopicView() {
     });
   }
 
-  // kann mit setEditQuizContent und mit setNewMultipleChoiceQuiz aufgerufen werden
+
+  /**
+   * Speichert veränderten oder neu erstellten Antworttext
+   * @param {number} index Index der Antwort im answers array von quiz ObjeKt
+   * @param {string} newText neuer Antworttext
+   * @param {Function} setterFunction setEditQuizContent oder setNewMultipleChoiceQuiz state setter Funktion
+   */
   function updateAnswer(index, newText, setterFunction) {
-    // save updated answers
-    setterFunction((prevState) => {
+    setterFunction((prevState) => { // save updated answers
       // make deep clone of existing answers (deep clone necessary since array of objects)
       const updatedAnswers = structuredClone(prevState.answers);
-
-      // update text
       updatedAnswers[index].text = newText;
 
       return {
@@ -127,14 +131,16 @@ function SingleTopicView() {
     });
   }
 
+  /**
+   * Speichert die Auswahl der richtigen Antwort für bearbeitete oder neu erstellte Quizfragen.
+   * @param {*} index 
+   * @param {*} setterFunction setEditQuizContent oder setNewMultipleChoiceQuiz state setter Funktion
+   */
   function updateCorrectAnswer(index, setterFunction) {
-    // save updated answers
-    // kann mit setEditQuizContent und mit setNewMultipleChoiceQuiz aufgerufen werden
     setterFunction((prevState) => {
       // make deep clone of existing answers (deep clone necessary since array of objects)
       const updatedAnswers = structuredClone(prevState.answers);
 
-      // nur eine Antwort kann richtig sein
       // setzte alle auf false, außer die, die neu ausgewählt wurde
       updatedAnswers.forEach((answer, answerIndex) => {
         if (index === answerIndex) {
@@ -151,6 +157,9 @@ function SingleTopicView() {
     });
   }
 
+  /**
+   * Fügt einem Quiz eine neue Antwortmöglichkeit hinzu.
+   */
   function addNewAnswer() {
     setNewMultipleChoiceQuiz((prevState) => {
       const newAnwers = [...prevState.answers, {

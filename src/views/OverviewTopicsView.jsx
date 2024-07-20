@@ -3,6 +3,8 @@ import TopicCard from "../components/TopicCard.jsx";
 import PrimaryButton from "../components/PrimaryButton.jsx";
 import { useState } from "react";
 import Modal from "../components/Modal.jsx";
+import TextArea from "../components/TextArea.jsx";
+import { v4 as uuid } from "uuid";
 
 /**
  * OverviewTopicsView component
@@ -14,9 +16,26 @@ import Modal from "../components/Modal.jsx";
 function OverviewTopicsView() {
   const [topics, setTopics] = useState(data);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [newTopic, setNewTopic] = useState("");
 
-  function toggleModal() {
-    setModalIsOpen(!modalIsOpen);
+  // TODO: figure out how to generate ids best - maybe uuid
+  function saveNewTopic() {
+    setTopics(prevTopics => {
+      return [
+        ...prevTopics,
+        {
+          id: uuid(),
+          topicName: newTopic,
+          quiz: []
+        }
+      ]
+    })
+    resetModal();
+  }
+
+  function resetModal() {
+    setModalIsOpen(false);
+    setNewTopic("");
   }
 
   return (
@@ -27,7 +46,7 @@ function OverviewTopicsView() {
         </span>
         <h1 className="text-center text-2xl">Alle Themen</h1>
         <div className="w-1/3 text-end">
-          <PrimaryButton text="Neues Thema" clickHandler={toggleModal}/>
+          <PrimaryButton text="Neues Thema" clickHandler={() => setModalIsOpen(true)}/>
         </div>
       </div>
       <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
@@ -40,7 +59,18 @@ function OverviewTopicsView() {
           />
         ))}
       </div>
-      <Modal isOpen={modalIsOpen} toggleModal={toggleModal} saveText="Speichern" />
+      <Modal
+        closeModal={resetModal}
+        isOpen={modalIsOpen}
+        saveText="Speichern"
+        saveHandler={saveNewTopic}
+      >
+        <TextArea
+          label="Neues Thema"
+          id="new-topic"
+          changeHandler={(newText) => setNewTopic(newText)}
+        />
+      </Modal>
     </>
   );
 }
