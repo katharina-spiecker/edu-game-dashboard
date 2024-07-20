@@ -5,7 +5,7 @@ import PrimaryButton from "../components/PrimaryButton.jsx";
 import Modal from "../components/Modal.jsx";
 import { useState } from "react";
 import TextArea from "../components/TextArea.jsx";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 /**
@@ -52,10 +52,21 @@ function SingleTopicView() {
     setMode(null);
     setQuizIndex(null);
     setEditQuizContent(null);
+    setNewMultipleChoiceQuiz({
+        question: null,
+        answers: [
+          {
+            text: null,
+            correct: false
+          },
+          {
+            text: null,
+            correct: false
+          }
+        ]
+    });
   }
 
-  // TODO: addNewAnswers
-  
   function saveNewHandler() {
     // add quiz
     topic.quiz.push(newMultipleChoiceQuiz);
@@ -140,6 +151,20 @@ function SingleTopicView() {
     });
   }
 
+  function addNewAnswer() {
+    setNewMultipleChoiceQuiz((prevState) => {
+      const newAnwers = [...prevState.answers, {
+        text: null,
+        correct: false
+      }];
+
+      return {
+        question: prevState.question,
+        answers: newAnwers
+      }
+    })
+  }
+
   return (
     <>
       <div className="flex items-center justify-between mx-auto mb-7">
@@ -154,13 +179,16 @@ function SingleTopicView() {
           />
         </div>
       </div>
-      {topic.quiz.map((item, index) => (
-        <MultipleChoiceCard
-          key={index}
-          content={item}
-          openModal={() => openModal("edit", index)}
-        />
-      ))}
+
+      {
+        topic.quiz.map((item, index) => (
+          <MultipleChoiceCard
+            key={index}
+            content={item}
+            openModal={() => openModal("edit", index)}
+          />
+        ))
+      }
       {/* new question modal */}
       {mode === "edit" ? (
         <Modal
@@ -168,13 +196,15 @@ function SingleTopicView() {
           closeModal={resetModal}
           saveHandler={saveEditHandler}
           saveText="Änderungen Speichern">
-          <h3 className="mb-3 font-semibold">Frage bearbeiten</h3>
-          <TextArea
-            id="question"
-            label="Frage"
-            defaultValue={editQuizContent.question}
-            changeHandler={(newText) => updateQuestion(newText, setEditQuizContent)}
-          />
+
+          <div className="mb-5">
+            <TextArea
+              id="question"
+              label="Frage"
+              defaultValue={editQuizContent.question}
+              changeHandler={(newText) => updateQuestion(newText, setEditQuizContent)}
+            />
+          </div>
           {editQuizContent.answers.map((answer, index) => (
             <div
               className="flex items-center"
@@ -182,7 +212,7 @@ function SingleTopicView() {
             >
               <button
                 onClick={() => updateCorrectAnswer(index, setEditQuizContent)}
-                className="rounded-full border w-6 h-6 flex items-center justify-center me-2 cursor-pointer"
+                className="shrink-0 rounded-full border w-6 h-6 flex items-center justify-center me-2 cursor-pointer"
                 disabled={answer.correct}>
                 <FontAwesomeIcon className={answer.correct ? "text-green-700" : "text-gray-200"} icon={faCheck} /> 
               </button>
@@ -202,12 +232,13 @@ function SingleTopicView() {
           saveText="Speichern"
           saveHandler={saveNewHandler}>
 
-          <h3>Frage hinzufügen</h3>
+        <div className="mb-5">
           <TextArea
             id="new-question"
             label="Frage"
             changeHandler={(newText) => updateQuestion(newText, setNewMultipleChoiceQuiz)}
           />
+        </div>
           {
             newMultipleChoiceQuiz.answers.map((answer, index) => (
               <div
@@ -216,7 +247,7 @@ function SingleTopicView() {
               >
                 <button
                   onClick={() => updateCorrectAnswer(index, setNewMultipleChoiceQuiz)}
-                  className="rounded-full border w-6 h-6 flex items-center justify-center me-2 cursor-pointer"
+                  className="shrink-0 rounded-full border w-6 h-6 flex items-center justify-center me-2 cursor-pointer"
                   disabled={answer.correct}>
                   <FontAwesomeIcon className={answer.correct ? "text-green-700" : "text-gray-200"} icon={faCheck} /> 
                 </button>
@@ -229,6 +260,14 @@ function SingleTopicView() {
                 />
               </div>
             ))
+          }
+
+          {
+            newMultipleChoiceQuiz.answers.length < 4 &&
+            <button onClick={addNewAnswer} className="border border-black p-1 rounded mt-3 ms-7">
+              <FontAwesomeIcon icon={faCirclePlus} className="me-2" />
+              {newMultipleChoiceQuiz.answers.length + 1}. Antwort hinzufügen
+            </button>
           }
           
         </Modal>
