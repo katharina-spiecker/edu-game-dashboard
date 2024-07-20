@@ -24,6 +24,19 @@ function SingleTopicView() {
   const [mode, setMode] = useState(null);
   const [quizIndex, setQuizIndex] = useState(null);
   const [editQuizContent, setEditQuizContent] = useState(null);
+  const [newMultipleChoiceQuiz, setNewMultipleChoiceQuiz] = useState({
+    question: null,
+    answers: [
+      {
+        text: null,
+        correct: false
+      },
+      {
+        text: null,
+        correct: false
+      }
+    ]
+  });
 
   function openModal(mode = "", index = null) {
     if (mode === "edit") {
@@ -34,18 +47,6 @@ function SingleTopicView() {
     setModalIsOpen(true);
   }
 
-  function saveEditHandler() {
-    // save
-    topic.quiz[quizIndex] = editQuizContent;
-    // reset
-    resetModal();
-  }
-
-  function saveNewHandler() {
-    // save
-    resetModal();
-  }
-
   function resetModal() {
     setModalIsOpen(false);
     setMode(null);
@@ -53,17 +54,55 @@ function SingleTopicView() {
     setEditQuizContent(null);
   }
 
-  function updateQuestion(newText) {
+  // TODO: addNewAnswers
+  
+  function saveNewHandler() {
+    // add quiz
+    topic.quiz.push(newMultipleChoiceQuiz);
+    // reset quiz
+    setNewMultipleChoiceQuiz({
+      question: null,
+        answers: [
+          {
+            text: null,
+            correct: false
+          },
+          {
+            text: null,
+            correct: false
+          }
+        ]
+    });
+
+    resetModal();
+  }
+
+  function saveEditHandler() {
+    // save
+    topic.quiz[quizIndex] = editQuizContent;
+    // reset
+    resetModal();
+  }
+
+  /**
+   * Bearbeitet existierende oder neu erstellte Fragen.
+   * @param {string} newText neue Text für die Frage
+   * @param {Function} setterFunction setEditQuizContent oder setNewMultipleChoiceQuiz
+   */
+  function updateQuestion(newText, setterFunction) {
     // update question, copy existing answers
-    setEditQuizContent({
-      question: newText,
-      answers: [...editQuizContent.answers],
+    setterFunction((prevState) => {
+      return {
+        question: newText,
+        answers: prevState.answers
+      }
     });
   }
 
-  function updateAnswer(index, newText) {
+  // kann mit setEditQuizContent und mit setNewMultipleChoiceQuiz aufgerufen werden
+  function updateAnswer(index, newText, setterFunction) {
     // save updated answers
-    setEditQuizContent((prevState) => {
+    setterFunction((prevState) => {
       // make deep clone of existing answers (deep clone necessary since array of objects)
       const updatedAnswers = structuredClone(prevState.answers);
 
@@ -77,9 +116,10 @@ function SingleTopicView() {
     });
   }
 
-  function updateCorrectAnswer(index) {
+  function updateCorrectAnswer(index, setterFunction) {
     // save updated answers
-    setEditQuizContent((prevState) => {
+    // kann mit setEditQuizContent und mit setNewMultipleChoiceQuiz aufgerufen werden
+    setterFunction((prevState) => {
       // make deep clone of existing answers (deep clone necessary since array of objects)
       const updatedAnswers = structuredClone(prevState.answers);
 
@@ -133,7 +173,7 @@ function SingleTopicView() {
             id="question"
             label="Frage"
             defaultValue={editQuizContent.question}
-            changeHandler={(newText) => updateQuestion(newText)}
+            changeHandler={(newText) => updateQuestion(newText, setEditQuizContent)}
           />
           {editQuizContent.answers.map((answer, index) => (
             <div
@@ -141,7 +181,7 @@ function SingleTopicView() {
               key={index}
             >
               <button
-                onClick={() => updateCorrectAnswer(index)}
+                onClick={() => updateCorrectAnswer(index, setEditQuizContent)}
                 className="rounded-full border w-6 h-6 flex items-center justify-center me-2 cursor-pointer"
                 disabled={answer.correct}>
                 <FontAwesomeIcon className={answer.correct ? "text-green-700" : "text-gray-200"} icon={faCheck} /> 
@@ -150,7 +190,7 @@ function SingleTopicView() {
                 id={"antwort-" + (index + 1)}
                 label={"Antwort " + (index + 1)}
                 defaultValue={answer.text}
-                changeHandler={(newText) => updateAnswer(index, newText)}
+                changeHandler={(newText) => updateAnswer(index, newText, setEditQuizContent)}
               />
             </div>
           ))}
@@ -161,8 +201,36 @@ function SingleTopicView() {
           closeModal={resetModal}
           saveText="Speichern"
           saveHandler={saveNewHandler}>
+
           <h3>Frage hinzufügen</h3>
-          <TextArea id="question" label="Frage" />
+          <TextArea
+            id="new-question"
+            label="Frage"
+            changeHandler={(newText) => updateQuestion(newText, setNewMultipleChoiceQuiz)}
+          />
+          {
+            newMultipleChoiceQuiz.answers.map((answer, index) => (
+              <div
+                className="flex items-center"
+                key={index}
+              >
+                <button
+                  onClick={() => updateCorrectAnswer(index, setNewMultipleChoiceQuiz)}
+                  className="rounded-full border w-6 h-6 flex items-center justify-center me-2 cursor-pointer"
+                  disabled={answer.correct}>
+                  <FontAwesomeIcon className={answer.correct ? "text-green-700" : "text-gray-200"} icon={faCheck} /> 
+                </button>
+
+                <TextArea
+                  key={index}
+                  id={"new-answer" + index}
+                  label={"Antwort " + (index + 1)}
+                  changeHandler={(newText) => updateAnswer(index, newText, setNewMultipleChoiceQuiz)}
+                />
+              </div>
+            ))
+          }
+          
         </Modal>
       )}
     </>
