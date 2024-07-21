@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { faPenToSquare, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 /**
@@ -13,7 +13,7 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
  * @param {Object} content besteht aus der Eigenschaft answers
  * @param {Function} openModal öffnet das Bearbeiten-Modal mit Frage und Antworten
  */
-function MultipleChoiceCard({ content, openModal }) {
+function MultipleChoiceCard({ content, openModal, deleteQuizHandler }) {
   
     return (
         <div className="bg-white shadow shadow-slate-300 p-4 relative rounded-2xl mb-7">
@@ -37,6 +37,12 @@ function MultipleChoiceCard({ content, openModal }) {
                 className="card__edit-icon absolute hover:cursor-pointer"
                 onClick={openModal}
             />
+
+            <FontAwesomeIcon
+                icon={faTrashCan}
+                className="card__delete-icon text-red-600 absolute hover:cursor-pointer"
+                onClick={deleteQuizHandler}
+             />
             
         </div>
     )

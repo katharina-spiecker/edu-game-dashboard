@@ -18,7 +18,11 @@ function OverviewTopicsView() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newTopic, setNewTopic] = useState("");
 
-  // TODO: figure out how to generate ids best - maybe uuid
+
+  /**
+   * Fügt dem topics array ein neues topic Objekt hinzu.
+   * Setzt leeren Array als Standardwert der quiz Eigenschaft.
+   */
   function saveNewTopic() {
     setTopics(prevTopics => {
       return [
@@ -38,6 +42,19 @@ function OverviewTopicsView() {
     setNewTopic("");
   }
 
+  /**
+   * Löscht ein topic Objekt vom topic state
+   * @param {number} index 
+   */
+  function deleteHandler(index) {
+    setTopics(prevState => {
+      const updatedState = [...prevState];
+      updatedState.splice(index, 1);
+      return updatedState;
+    })
+
+  }
+
   return (
     <>
       <div className="flex items-center justify-between mx-auto mb-7">
@@ -50,12 +67,13 @@ function OverviewTopicsView() {
         </div>
       </div>
       <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
-        {topics.map((topic) => (
+        {topics.map((topic, index) => (
           <TopicCard
             key={topic.id}
             topicName={topic.topicName}
             questionCount={topic.quiz.length}
             topicId={topic.id}
+            deleteHandler={() => deleteHandler(index)}
           />
         ))}
       </div>

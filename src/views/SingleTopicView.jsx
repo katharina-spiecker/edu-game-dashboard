@@ -20,6 +20,7 @@ function SingleTopicView() {
   const { id } = useParams();
 
   const topic = data.find((topic) => topic.id == id);
+  const [quizArr, setQuizArr] = useState(topic.quiz);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mode, setMode] = useState(null);
   const [quizIndex, setQuizIndex] = useState(null);
@@ -41,7 +42,7 @@ function SingleTopicView() {
   function openModal(mode = "", index = null) {
     if (mode === "edit") {
       setQuizIndex(index);
-      setEditQuizContent(topic.quiz[index]);
+      setEditQuizContent(quizArr[index]);
     }
     setMode(mode);
     setModalIsOpen(true);
@@ -69,7 +70,12 @@ function SingleTopicView() {
 
   function saveNewHandler() {
     // add quiz
-    topic.quiz.push(newMultipleChoiceQuiz);
+    setQuizArr(prevState => {
+      return [
+        ...prevState,
+        newMultipleChoiceQuiz
+      ];
+    });
     // reset quiz
     setNewMultipleChoiceQuiz({
       question: null,
@@ -92,7 +98,12 @@ function SingleTopicView() {
    * Saves edited quiz item.
    */
   function saveEditHandler() {
-    topic.quiz[quizIndex] = editQuizContent;
+    setQuizArr(prevState => {
+      const updatedQuizArr = [...prevState];
+      updatedQuizArr[quizIndex] = editQuizContent;
+      return updatedQuizArr;
+    });
+
     resetModal();
   }
 
@@ -174,11 +185,25 @@ function SingleTopicView() {
     })
   }
 
+  /**
+   * Delete quiz object from quizArr state
+   * @param {*} index 
+   */
+  function deleteQuizHandler(index) {
+    setQuizArr(prevState => {
+      // clone arr and remove object
+      const updatedQuizArr = [...prevState];
+      updatedQuizArr.splice(index, 1);
+
+      return updatedQuizArr;
+    });
+  }
+
   return (
     <>
       <div className="flex items-center justify-between mx-auto mb-7">
         <span className="inline-block w-1/3">
-          {topic.quiz.length} {topic.quiz.length === 1 ? "Frage" : "Fragen"}
+          {quizArr.length} {quizArr.length === 1 ? "Frage" : "Fragen"}
         </span>
         <h1 className="text-center text-2xl">Thema {topic.topicName}</h1>
         <div className="w-1/3 text-end">
@@ -190,11 +215,12 @@ function SingleTopicView() {
       </div>
 
       {
-        topic.quiz.map((item, index) => (
+        quizArr.map((item, index) => (
           <MultipleChoiceCard
             key={index}
             content={item}
             openModal={() => openModal("edit", index)}
+            deleteQuizHandler={() => deleteQuizHandler(index)}
           />
         ))
       }

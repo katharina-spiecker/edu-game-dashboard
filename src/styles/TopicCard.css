@@ -1,9 +1,14 @@
 .topic-card__number {
-  right: 15px;
-  bottom: 15px;
+  left: 15px;
+  top: 15px;
 }
 
 .card__edit-icon {
   right: 15px;
   top: 15px;
+}
+
+.card__delete-icon {
+  right: 15px;
+  bottom: 15px;
 }
