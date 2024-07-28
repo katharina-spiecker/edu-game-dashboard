@@ -1,9 +1,8 @@
 import { useParams } from "react-router-dom";
-import data from "../assets/data.js";
 import MultipleChoiceCard from "../components/MultipleChoiceCard.jsx";
 import PrimaryButton from "../components/PrimaryButton.jsx";
 import Modal from "../components/Modal.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextArea from "../components/TextArea.jsx";
 import { faCheck, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -19,8 +18,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function SingleTopicView() {
   const { id } = useParams();
 
-  const topic = data.find((topic) => topic.id == id);
-  const [quizArr, setQuizArr] = useState(topic.quiz);
+  const [topic, setTopic] = useState(null);
+  const [quizArr, setQuizArr] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mode, setMode] = useState(null);
   const [quizIndex, setQuizIndex] = useState(null);
@@ -38,6 +37,24 @@ function SingleTopicView() {
       }
     ]
   });
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/api/topics/${id}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to fetch topics');
+      }
+    })
+    .then(data => {
+      console.log(data);
+      setTopic(data);
+      setQuizArr(data.quiz);
+    })
+    .catch(error => console.error(error.message));
+
+  }, []);
 
   function openModal(mode = "", index = null) {
     if (mode === "edit") {
@@ -205,7 +222,7 @@ function SingleTopicView() {
         <span className="inline-block w-1/3">
           {quizArr.length} {quizArr.length === 1 ? "Frage" : "Fragen"}
         </span>
-        <h1 className="text-center text-2xl">Thema {topic.topicName}</h1>
+        <h1 className="text-center text-2xl">Thema {topic ? topic.topicName : ""}</h1>
         <div className="w-1/3 text-end">
           <PrimaryButton
             text="Neue Frage"

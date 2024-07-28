@@ -1,7 +1,6 @@
-import data from "../assets/data.js";
 import TopicCard from "../components/TopicCard.jsx";
 import PrimaryButton from "../components/PrimaryButton.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../components/Modal.jsx";
 import TextArea from "../components/TextArea.jsx";
 import { v4 as uuid } from "uuid";
@@ -14,10 +13,27 @@ import { v4 as uuid } from "uuid";
  * @component
  */
 function OverviewTopicsView() {
-  const [topics, setTopics] = useState(data);
+  const [topics, setTopics] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newTopic, setNewTopic] = useState("");
 
+  useEffect(() => {
+    
+    fetch("http://localhost:3000/api/topics")
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Failed to fetch topics');
+      }
+    })
+    .then(data => {
+      console.log(data);
+      setTopics(data);
+    })
+    .catch(error => console.error(error.message));
+
+  }, []);
 
   /**
    * Fügt dem topics array ein neues topic Objekt hinzu.
