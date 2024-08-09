@@ -81,7 +81,14 @@ function OverviewTopicsView() {
    * @param {number} index 
    */
   function deleteHandler(index) {
-    // make call to api, delete based on index possible? better to send id
+
+    // delete in frontend
+    setTopics(prevState => {
+        const updatedState = [...prevState];
+        updatedState.splice(index, 1);
+        return updatedState;
+    });
+
     const id = topics[index].id;
 
     fetch("http://localhost:3000/api/topics", {
@@ -95,12 +102,6 @@ function OverviewTopicsView() {
         if (!res.ok) {
             throw new Error();
         }
-        // delete in frontend
-        setTopics(prevState => {
-            const updatedState = [...prevState];
-            updatedState.splice(index, 1);
-            return updatedState;
-        })
     })
     .catch((error) => {
         console.error(error.message);

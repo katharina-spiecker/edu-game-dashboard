@@ -7,7 +7,6 @@ export default function Layout() {
             <header className="bg-yellow-300">
                 <nav className="sm:container mx-auto py-3 px-4">
                     <a className="me-7" href="/">Übersicht</a>
-                    <a href="">Einstellung</a>
                 </nav>
             </header>
             <main className="bg-slate-100 pt-10">
