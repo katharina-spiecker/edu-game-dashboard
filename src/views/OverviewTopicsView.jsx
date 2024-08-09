@@ -15,7 +15,7 @@ import { v4 as uuid } from "uuid";
 function OverviewTopicsView() {
   const [topics, setTopics] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [newTopic, setNewTopic] = useState("");
+  const [newTopicName, setNewTopicName] = useState("");
 
   useEffect(() => {
     
@@ -40,22 +40,40 @@ function OverviewTopicsView() {
    * Setzt leeren Array als Standardwert der quiz Eigenschaft.
    */
   function saveNewTopic() {
-    setTopics(prevTopics => {
-      return [
-        ...prevTopics,
-        {
-          id: uuid(),
-          topicName: newTopic,
-          quiz: []
-        }
-      ]
+
+    const newTopic = {
+        id: uuid(),
+        topicName: newTopicName,
+        quiz: []
+    };
+
+    fetch("http://localhost:3000/api/topics", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newTopic)
     })
-    resetModal();
+    .then(res => {
+        if (!res.ok) {
+            throw new Error();
+        }
+        setTopics(prevTopics => {
+            return [
+              ...prevTopics,
+              newTopic
+            ]
+        })
+    })
+    .finally(() => {
+        resetModal(); // if worked or not: reset the modal
+    })
+    
   }
 
   function resetModal() {
     setModalIsOpen(false);
-    setNewTopic("");
+    setNewTopicName("");
   }
 
   /**
@@ -63,12 +81,30 @@ function OverviewTopicsView() {
    * @param {number} index 
    */
   function deleteHandler(index) {
-    setTopics(prevState => {
-      const updatedState = [...prevState];
-      updatedState.splice(index, 1);
-      return updatedState;
-    })
+    // make call to api, delete based on index possible? better to send id
+    const id = topics[index].id;
 
+    fetch("http://localhost:3000/api/topics", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({id: id})
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error();
+        }
+        // delete in frontend
+        setTopics(prevState => {
+            const updatedState = [...prevState];
+            updatedState.splice(index, 1);
+            return updatedState;
+        })
+    })
+    .catch((error) => {
+        console.error(error.message);
+    })
   }
 
   return (
@@ -102,7 +138,7 @@ function OverviewTopicsView() {
         <TextArea
           label="Neues Thema"
           id="new-topic"
-          changeHandler={(newText) => setNewTopic(newText)}
+          changeHandler={(newText) => setNewTopicName(newText)}
         />
       </Modal>
     </>
