@@ -4,6 +4,7 @@ export default [
     topicName: "topic 1",
     quiz: [
       {
+        quizId: "uuid string is here",
         question: 'What is a correct syntax to output "Hello World" in Python?',
         answers: [
           {
@@ -21,6 +22,7 @@ export default [
         ]
       },
       {
+        quizId: "uuid string is here",
         question: 'What is a correct syntax to output "Hello World" in Python?',
         answers: [
           {
@@ -38,6 +40,7 @@ export default [
         ]
       },
       {
+        quizId: "uuid string is here",
         question: "question",
         answers: [
           {
@@ -51,6 +54,7 @@ export default [
         ]
       },
       {
+        quizId: "uuid string is here",
         question: "question",
         answers: [
           {
@@ -70,6 +74,7 @@ export default [
     topicName: "topic 2",
     quiz: [
       {
+        quizId: "uuid string is here",
         question: "question",
         answers: [
           {
@@ -83,70 +88,7 @@ export default [
         ]
       },
       {
-        question: "question",
-        answers: [
-          {
-            text: "sdfklsjdf",
-            correct: true
-          },
-          {
-            text: "sdfklsjdf",
-            correct: false
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: "3",
-    topicName: "topic 3",
-    quiz: [
-      {
-        question: "question",
-        answers: [
-          {
-            text: "sdfklsjdf",
-            correct: true
-          },
-          {
-            text: "sdfklsjdf",
-            correct: false
-          }
-        ]
-      },
-      {
-        question: "question",
-        answers: [
-          {
-            text: "sdfklsjdf",
-            correct: true
-          },
-          {
-            text: "sdfklsjdf",
-            correct: false
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: "4",
-    topicName: "topic 4",
-    quiz: [
-      {
-        question: "question",
-        answers: [
-          {
-            text: "sdfklsjdf",
-            correct: true
-          },
-          {
-            text: "sdfklsjdf",
-            correct: false
-          }
-        ]
-      },
-      {
+        quizId: "uuid string is here",
         question: "question",
         answers: [
           {

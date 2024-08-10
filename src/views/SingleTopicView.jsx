@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import TextArea from "../components/TextArea.jsx";
 import { faCheck, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { v4 as uuid } from "uuid";
 
 /**
  * SingleTopicView component
@@ -86,14 +87,20 @@ function SingleTopicView() {
   }
 
   function saveNewHandler() {
-    // add quiz
+    // create unique ID
+    const newQuiz = {
+        quizId: uuid(),
+        ...newMultipleChoiceQuiz
+    }
+    // add quiz to state
     setQuizArr(prevState => {
       return [
         ...prevState,
-        newMultipleChoiceQuiz
+        newQuiz
       ];
     });
-    // reset quiz
+
+    // reset state new quiz
     setNewMultipleChoiceQuiz({
       question: null,
         answers: [
@@ -108,7 +115,24 @@ function SingleTopicView() {
         ]
     });
 
-    resetModal();
+    fetch("http://localhost:3000/api/quizzes", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            topicId: id,
+            ...newQuiz
+        })
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error();
+        }
+        resetModal();
+    })
+    .catch(err => console.error(err))
+    
   }
 
   /**
@@ -121,6 +145,7 @@ function SingleTopicView() {
       return updatedQuizArr;
     });
 
+    saveUpdatedQuizToDB(editQuizContent);
     resetModal();
   }
 
@@ -133,6 +158,7 @@ function SingleTopicView() {
     // update question, copy existing answers
     setterFunction((prevState) => {
       return {
+        quizId: prevState.quizId,
         question: newText,
         answers: prevState.answers
       }
@@ -153,6 +179,7 @@ function SingleTopicView() {
       updatedAnswers[index].text = newText;
 
       return {
+        quizId: prevState.quizId,
         question: prevState.question,
         answers: updatedAnswers,
       };
@@ -179,6 +206,7 @@ function SingleTopicView() {
       });
 
       return {
+        quizId: prevState.quizId,
         question: prevState.question,
         answers: updatedAnswers,
       };
@@ -204,9 +232,11 @@ function SingleTopicView() {
 
   /**
    * Delete quiz object from quizArr state
-   * @param {*} index 
+   * @param {string} index 
    */
   function deleteQuizHandler(index) {
+    const quizId = quizArr[index].quizId;
+
     setQuizArr(prevState => {
       // clone arr and remove object
       const updatedQuizArr = [...prevState];
@@ -214,6 +244,46 @@ function SingleTopicView() {
 
       return updatedQuizArr;
     });
+
+    fetch("http://localhost:3000/api/quizzes", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            topicId: id,
+            quizId: quizId
+        })
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error();
+        }
+    })
+    .catch((error) => {
+        console.error(error.message);
+    })
+  }
+
+  function saveUpdatedQuizToDB(newQuiz) {
+    fetch("http://localhost:3000/api/quizzes", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            topicId: id,
+            ...newQuiz
+        })
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error();
+        }
+    })
+    .catch((error) => {
+        console.error(error.message);
+    })
   }
 
   return (
@@ -247,7 +317,7 @@ function SingleTopicView() {
           isOpen={modalIsOpen}
           closeModal={resetModal}
           saveHandler={saveEditHandler}
-          saveText="Änderungen Speichern">
+          saveText="Änderungen speichern">
 
           <div className="mb-5">
             <TextArea
