@@ -49,12 +49,10 @@ function SingleTopicView() {
       }
     })
     .then(data => {
-      console.log(data);
       setTopic(data);
       setQuizArr(data.quiz);
     })
     .catch(error => console.error(error.message));
-
   }, []);
 
   function openModal(mode = "", index = null) {
@@ -89,9 +87,11 @@ function SingleTopicView() {
   function saveNewHandler() {
     // create unique ID
     const newQuiz = {
-        quizId: uuid(),
-        ...newMultipleChoiceQuiz
+      question: newMultipleChoiceQuiz.question,
+      answers: newMultipleChoiceQuiz.answers,
+      quizId: uuid()
     }
+
     // add quiz to state
     setQuizArr(prevState => {
       return [
@@ -126,6 +126,7 @@ function SingleTopicView() {
         })
     })
     .then(res => {
+      console.log(res)
         if (!res.ok) {
             throw new Error();
         }
