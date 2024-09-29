@@ -100,20 +100,7 @@ function SingleTopicView() {
       ];
     });
 
-    // reset state new quiz
-    setNewMultipleChoiceQuiz({
-      question: null,
-        answers: [
-          {
-            text: null,
-            correct: false
-          },
-          {
-            text: null,
-            correct: false
-          }
-        ]
-    });
+    resetModal();
 
     fetch("http://localhost:3000/api/quizzes", {
         method: "POST",
@@ -126,11 +113,10 @@ function SingleTopicView() {
         })
     })
     .then(res => {
-      console.log(res)
+        console.log(res)
         if (!res.ok) {
             throw new Error();
         }
-        resetModal();
     })
     .catch(err => console.error(err))
     

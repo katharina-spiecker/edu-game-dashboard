@@ -14,7 +14,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout/>}>
           <Route index element={<OverviewTopicsView />} />
-          <Route path="/edit-topic/:id" element={<SingleTopicView />} />
+          <Route path="edit-topic/:id" element={<SingleTopicView />} />
         </Route>
       </Routes>
     </BrowserRouter>
