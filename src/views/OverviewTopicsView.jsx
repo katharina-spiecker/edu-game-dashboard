@@ -123,9 +123,7 @@ function OverviewTopicsView() {
         {topics.map((topic, index) => (
           <TopicCard
             key={topic.id}
-            topicName={topic.topicName}
-            questionCount={topic.quiz.length}
-            topicId={topic.id}
+            topic={topic}
             deleteHandler={() => deleteHandler(index)}
           />
         ))}

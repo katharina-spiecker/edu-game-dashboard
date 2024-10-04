@@ -13,23 +13,24 @@ import { useNavigate } from "react-router-dom";
  *  
  * 
  * @component.
- * @param {string} topicName Name des Themas
- * @param {number} topicId Themen Id
- * @param {number} questionCount Anzahl der Mehrfachauswahlfragen des Themas
+ * @param {Objekt} topic Themen Daten darunter topicName, id, quiz
+ * @param {Function} deleteHandler Funktion um Thema und alle Quizze die dazu gehören zu löschen
  */
-function TopicCard({ topicName, topicId, questionCount, deleteHandler }) {
+// TODO
+function TopicCard({ topic, deleteHandler }) {
+
   const navigate = useNavigate();
 
   return (
     <div className="bg-white shadow shadow-slate-300 p-4 relative rounded-2xl h-40 flex justify-center items-center">
-      <div>{topicName}</div>
+      <div>{topic.topicName}</div>
       <span className="absolute topic-card__number text-gray-500">
-        {questionCount} {questionCount === 1 ? "Frage" : "Fragen"}
+        {topic.quiz.length} {topic.quiz.length === 1 ? "Frage" : "Fragen"}
       </span>
       <FontAwesomeIcon
         icon={faPenToSquare}
         className="card__edit-icon absolute hover:cursor-pointer"
-        onClick={() => navigate(`/edit-topic/${topicId}`)}
+        onClick={() => navigate(`/edit-topic/${topic.id}`)}
       />
       <FontAwesomeIcon
         icon={faTrashCan}
