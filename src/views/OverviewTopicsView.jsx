@@ -3,7 +3,6 @@ import PrimaryButton from "../components/PrimaryButton.jsx";
 import { useState, useEffect } from "react";
 import Modal from "../components/Modal.jsx";
 import TextArea from "../components/TextArea.jsx";
-import { v4 as uuid } from "uuid";
 
 /**
  * OverviewTopicsView component
@@ -28,11 +27,9 @@ function OverviewTopicsView() {
       }
     })
     .then(data => {
-      console.log(data);
       setTopics(data);
     })
     .catch(error => console.error(error.message));
-
   }, []);
 
   /**
@@ -42,7 +39,6 @@ function OverviewTopicsView() {
   function saveNewTopic() {
 
     const newTopic = {
-        id: uuid(),
         topicName: newTopicName,
         quiz: []
     };
@@ -58,6 +54,11 @@ function OverviewTopicsView() {
         if (!res.ok) {
             throw new Error();
         }
+        return res.json();
+    })
+    .then(data => {
+        // speichere die id von mongodb
+        newTopic._id = data.insertedId;
         setTopics(prevTopics => {
             return [
               ...prevTopics,
@@ -89,15 +90,9 @@ function OverviewTopicsView() {
         return updatedState;
     });
 
-    const id = topics[index].id;
+    const id = topics[index]._id;
 
-    fetch("http://localhost:3000/api/topics", {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({id: id})
-    })
+    fetch(`http://localhost:3000/api/topics/${id}`, { method: "DELETE"})
     .then(res => {
         if (!res.ok) {
             throw new Error();
@@ -122,7 +117,7 @@ function OverviewTopicsView() {
       <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
         {topics.map((topic, index) => (
           <TopicCard
-            key={topic.id}
+            key={topic._id}
             topic={topic}
             deleteHandler={() => deleteHandler(index)}
           />

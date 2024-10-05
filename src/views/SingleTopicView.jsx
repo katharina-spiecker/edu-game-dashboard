@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import MultipleChoiceCard from "../components/MultipleChoiceCard.jsx";
 import PrimaryButton from "../components/PrimaryButton.jsx";
 import { useState, useEffect } from "react";
-import { v4 as uuid } from "uuid";
 import EditMultipleChoiceModal from "../components/EditMultipleChoiceModal.jsx";
 import CreateMultipleChoiceModal from "../components/CreateMultipleChoiceModal.jsx";
 
@@ -54,52 +53,34 @@ function SingleTopicView() {
   }
 
   function saveNewHandler(newMultipleChoiceQuiz) {
-    // create unique ID
-    const newQuiz = {
-      question: newMultipleChoiceQuiz.question,
-      answers: newMultipleChoiceQuiz.answers,
-      quizId: uuid(),
-    };
-
-    // add quiz to state
-    setQuizArr((prevState) => {
-      return [...prevState, newQuiz];
-    });
 
     resetModal();
 
-    fetch("http://localhost:3000/api/quizzes", {
+    fetch(`http://localhost:3000/api/topics/${id}/quizzes`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        topicId: id,
-        ...newQuiz,
+        question: newMultipleChoiceQuiz.question,
+        answers: newMultipleChoiceQuiz.answers
       })
     })
     .then((res) => {
-    console.log(res);
-    if (!res.ok) {
-        throw new Error();
-    }
+        if (!res.ok) {
+            throw new Error();
+        }
+        return res.json();
+    })
+    .then(data => {
+        // API returns new quiz: add to state
+        setQuizArr((prevState) => {
+            return [...prevState, data];
+        });
     })
     .catch((err) => console.error(err));
   }
-
-  /**
-   * Saves edited quiz item.
-   */
-  function saveEditHandler(editQuizContent) {
-    setQuizArr((prevState) => {
-      const updatedQuizArr = [...prevState];
-      updatedQuizArr[quizIndex] = editQuizContent;
-      return updatedQuizArr;
-    });
-
-    saveUpdatedQuizToDB(editQuizContent);
-    resetModal();
-  }
+    
 
   /**
    * Delete quiz object from quizArr state
@@ -116,45 +97,45 @@ function SingleTopicView() {
       return updatedQuizArr;
     });
 
-    fetch("http://localhost:3000/api/quizzes", {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        topicId: id,
-        quizId: quizId,
-      }),
+    fetch(`http://localhost:3000/api/topics/${id}/quizzes/${quizId}`, { method: "DELETE" })
+    .then((res) => {
+    if (!res.ok) {
+        throw new Error();
+    }
     })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error();
-        }
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+    .catch((error) => console.error(error.message));
   }
 
-  function saveUpdatedQuizToDB(newQuiz) {
-    fetch("http://localhost:3000/api/quizzes", {
+  /**
+   * Saves edited quiz item.
+   */
+  function saveEditHandler(editQuizContent) {
+    fetch(`http://localhost:3000/api/topics/${id}/quizzes/${editQuizContent.quizId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        topicId: id,
-        ...newQuiz,
-      }),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error();
-        }
+        question: editQuizContent.question,
+        answers: editQuizContent.answers
       })
-      .catch((error) => {
+    })
+    .then((res) => {
+        if (res.ok) {
+            // success: aktualisiere Frontend
+            setQuizArr((prevState) => {
+                const updatedQuizArr = [...prevState];
+                updatedQuizArr[quizIndex] = editQuizContent;
+                return updatedQuizArr;
+            });
+            resetModal();
+        } else {
+            throw new Error();
+        }
+    })
+    .catch((error) => {
         console.error(error.message);
-      });
+    });
   }
 
   return (

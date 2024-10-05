@@ -16,7 +16,6 @@ import { useNavigate } from "react-router-dom";
  * @param {Objekt} topic Themen Daten darunter topicName, id, quiz
  * @param {Function} deleteHandler Funktion um Thema und alle Quizze die dazu gehören zu löschen
  */
-// TODO
 function TopicCard({ topic, deleteHandler }) {
 
   const navigate = useNavigate();
@@ -30,7 +29,7 @@ function TopicCard({ topic, deleteHandler }) {
       <FontAwesomeIcon
         icon={faPenToSquare}
         className="card__edit-icon absolute hover:cursor-pointer"
-        onClick={() => navigate(`/edit-topic/${topic.id}`)}
+        onClick={() => navigate(`/edit-topic/${topic._id}`)}
       />
       <FontAwesomeIcon
         icon={faTrashCan}
