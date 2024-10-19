@@ -4,6 +4,8 @@ import PrimaryButton from "../components/PrimaryButton.jsx";
 import { useState, useEffect } from "react";
 import EditMultipleChoiceModal from "../components/EditMultipleChoiceModal.jsx";
 import CreateMultipleChoiceModal from "../components/CreateMultipleChoiceModal.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 
 /**
  * SingleTopicView component
@@ -21,6 +23,7 @@ function SingleTopicView() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mode, setMode] = useState(null);
   const [quizIndex, setQuizIndex] = useState(null);
+  const [editNameActive, setEditNameActive] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:3000/api/topics/${id}`)
@@ -138,15 +141,57 @@ function SingleTopicView() {
     });
   }
 
+  function editNameHandler(event) {
+    const newName = event.target.value;
+
+    fetch(`http://localhost:3000/api/topics/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        topicName: newName
+      })
+    })
+    .then((res) => {
+        if (res.ok) {
+            setTopic(prev => {
+                return {...prev, topicName: newName}
+            })
+            setEditNameActive(false);
+        } else {
+            throw new Error();
+        }
+    })
+    .catch((error) => {
+        console.error(error.message);
+    });
+  }
+
   return (
     <>
       <div className="flex items-center justify-between mx-auto mb-7">
         <span className="inline-block w-1/3">
           {quizArr.length} {quizArr.length === 1 ? "Frage" : "Fragen"}
         </span>
-        <h1 className="text-center text-2xl">
-          Thema {topic ? topic.topicName : ""}
-        </h1>
+
+        <div className="relative">
+            {
+                editNameActive ? (
+                  <input type="text" onBlur={editNameHandler} />
+                ) : (
+                   <h1 className="text-center text-2xl">
+                    Thema {topic ? topic.topicName : ""}
+                   </h1>
+                )
+            }
+            <FontAwesomeIcon
+                icon={faPenToSquare}
+                className="topic-name-edit__icon absolute hover:cursor-pointer"
+                onClick={() => setEditNameActive(true)}
+            />
+        </div>
+
         <div className="w-1/3 text-end">
           <PrimaryButton
             text="Neue Frage"

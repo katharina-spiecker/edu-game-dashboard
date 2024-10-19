@@ -12,3 +12,8 @@
   right: 15px;
   bottom: 15px;
 }
+
+.topic-name-edit__icon {
+    right: -20px;
+    top: 8px;
+}

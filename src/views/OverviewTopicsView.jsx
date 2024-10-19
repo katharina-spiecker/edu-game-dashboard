@@ -17,7 +17,6 @@ function OverviewTopicsView() {
   const [newTopicName, setNewTopicName] = useState("");
 
   useEffect(() => {
-    
     fetch("http://localhost:3000/api/topics")
     .then(response => {
       if (response.ok) {
