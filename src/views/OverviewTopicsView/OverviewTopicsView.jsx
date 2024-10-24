@@ -6,10 +6,10 @@ import TextArea from "../../components/TextArea.jsx";
 import HeadingContainer from "../../components/HeadingContainer.jsx";
 
 /**
- * Diese View Komponente generiert die Themenübersicht Seite.
+ * Die Komponente generiert die Themenübersicht-Seite.
  * 
- * @module OverviewTopicsView
- * @returns {JSX.Element} OverviewTopicsView Komponente
+ * @component
+ * @returns {JSX.Element} Die OverviewTopicsView Komponente.
  */
 function OverviewTopicsView() {
   const [topics, setTopics] = useState([]);

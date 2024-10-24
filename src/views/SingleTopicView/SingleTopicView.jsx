@@ -9,11 +9,10 @@ import PrimaryButton from "../../components/PrimaryButton.jsx";
 import HeadingContainer from "../../components/HeadingContainer.jsx";
 
 /**
- * Diese View Komponente generiert eine Seite,
- * welche die Fragen und Antworten zu einem einzelnes Thema anzeigt.
+ * Die Komponente generiert eine Seite, welche alle Fragen und Antworten zu einem bestimmten Thema anzeigt.
  * 
- * @module SingleTopicView
- * @returns {JSX.Element} SingleTopicView Komponente
+ * @component
+ * @returns {JSX.Element} Die SingleTopicView Komponente.
  */
 function SingleTopicView() {
   const { id } = useParams();
@@ -180,7 +179,7 @@ function SingleTopicView() {
                   <input type="text" onBlur={editNameHandler} />
                 ) : (
                    <h1 className="md:text-center text-2xl">
-                    Thema {topic ? topic.topicName : ""}
+                    {topic ? topic.topicName : "Thema"}
                    </h1>
                 )
             }

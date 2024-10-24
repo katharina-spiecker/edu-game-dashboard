@@ -5,15 +5,16 @@ import TextArea from "../../../components/TextArea.jsx";
 import PrimaryButton from "../../../components/PrimaryButton.jsx";
 
 /**
- * Diese Komponente ist ein Modal zum Bearbeiten einer 
- * existierenden Quiz Frage und Antworten.
+ * Die Komponente stellt ein Modal zum Bearbeiten einer existierenden Multiple-Choice-Frage bereit.
+ * Ermöglicht das Bearbeiten der Frage und Antworten, das Löschen oder Hinzufügen von Antwortmöglichkeiten
+ * und die Auswahl der korrekten Antwort.
  * 
- * @module SingleTopicView/EditMultipleChoiceModal
- * @param {boolean} isOpen Modal geöffnet oder geschlossen
- * @param {Function} closeModal Funktion, welche zum Schließen aufgerufen wird
- * @param {Function} saveEditHandler Zum Schließen des Modals
- * @param {Objekt} initialContent Enthält Zustand eines Quizzes vor dem Bearbeiten
- * @returns {JSX.Element} EditMultipleChoiceModal Komponente
+ * @component
+ * @param {boolean} isOpen Gibt an, ob das Modal geöffnet oder geschlossen ist.
+ * @param {Function} closeModal Die Funktion, welche zum Schließen des Modals aufgerufen wird.
+ * @param {Function} saveEditHandler Die Funktion, welche zum Speichern der Änderungen aufgerufen wird.
+ * @param {Objekt} initialContent Enthält den Zustand einer Multiple-Choice-Frage vor dem Bearbeiten.
+ * @returns {JSX.Element} Die EditMultipleChoiceModal Komponente.
  */
 function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialContent}) {
     const [editQuizContent, setEditQuizContent] = useState(initialContent);
@@ -92,7 +93,7 @@ function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialCo
             onClick={handleClose}
           ></div>
 
-          <div className="bg-white shadow shadow-slate-300 rounded-2xl p-4 z-1 min-w-80 min-h-80 fixed top-0 mx-4 mx-auto left-1/2 -translate-x-1/2 md:w-96 pb-20">
+          <div className="bg-white shadow shadow-slate-300 rounded-2xl p-4 mt-5 z-1 min-w-80 min-h-80 fixed top-0 mx-4 mx-auto left-1/2 -translate-x-1/2 md:w-96 pb-20">
             <FontAwesomeIcon
               icon={faXmark}
               className="absolute top-4 right-4 hover:cursor-pointer"

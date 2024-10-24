@@ -1,12 +1,12 @@
 
 /**
- * Diese Komponente stellt ein Text Eingabe Feld bereit.
+ * Diese Komponente stellt ein Text Eingabefeld bereit.
  * 
  * @component TextArea
- * @param {string} label Kurzbeschreibung des erwarteten Inputs
- * @param {number} id id für Zuordnung zu Label
- * @param {string} defaultValue Text Standardwert
- * @param {Function} changeHandler wird beim change Event aufgerufen
+ * @param {string} label Die Kurzbeschreibung des erwarteten Inputs.
+ * @param {number} id Die id, welche das textarea Element und das Label verbindet.
+ * @param {string} defaultValue Der vorausgefüllte Textinhalt des textarea Element.
+ * @param {Function} changeHandler Die Funktion, welche beim Auftreten des change Events aufgerufen wird.
  * @returns {JSX.Element} TextArea Komponente
  */
 function TextArea({ label, id, defaultValue, changeHandler }) {

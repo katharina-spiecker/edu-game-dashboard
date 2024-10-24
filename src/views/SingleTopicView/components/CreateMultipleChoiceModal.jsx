@@ -6,14 +6,14 @@ import PrimaryButton from "../../../components/PrimaryButton.jsx";
 
 
 /**
- * Diese Komponente stellt ein Modal zum Erstellen einer Multiplechoice
- * Frage und Antworten bereit.
+ * Die Komponente stellt ein Modal zum Erstellen einer Multiple-Choice-Frage bereit.
+ * Ermöglicht das Erstellen der Frage und Antworten und die Auswahl der korrekten Antwort.
  * 
- * @module SingleTopicView/CreateMultipleChoiceModal
- * @param {boolean} isOpen Modal geöffnet oder geschlossen
- * @param {Function} closeModal Funktion, welche zum Schließen aufgerufen wird
- * @param {Function} saveNewHandler Funktion, welche beim Klick auf den PrimaryButton aufgerufen wird
- * @returns {JSX.Element} CreateMultipleChoiceModal Komponente
+ * @component
+ * @param {boolean} isOpen Gibt an, ob das Modal geöffnet oder geschlossen.
+ * @param {Function} closeModal Die Funktion, welche zum Schließen des Modals aufgerufen wird.
+ * @param {Function} saveNewHandler Die Funktion, welche beim Klick auf den Hauptbutton aufgerufen wird.
+ * @returns {JSX.Element} Die CreateMultipleChoiceModal Komponente.
  */
 function CreateMultipleChoiceModal({isOpen, closeModal, saveNewHandler}) {
     const [newMultipleChoiceQuiz, setNewMultipleChoiceQuiz] = useState({
@@ -138,7 +138,7 @@ function CreateMultipleChoiceModal({isOpen, closeModal, saveNewHandler}) {
             onClick={handleClose}
           ></div>
 
-          <div className="bg-white shadow shadow-slate-300 rounded-2xl p-4 z-1 min-w-80 min-h-80 fixed top-0 mx-4 mx-auto left-1/2 -translate-x-1/2 md:w-96 pb-20">
+          <div className="bg-white shadow shadow-slate-300 rounded-2xl p-4 mt-5 z-1 min-w-80 min-h-80 fixed top-0 mx-4 mx-auto left-1/2 -translate-x-1/2 md:w-96 pb-20">
             <FontAwesomeIcon
               icon={faXmark}
               className="absolute top-4 right-4 hover:cursor-pointer"

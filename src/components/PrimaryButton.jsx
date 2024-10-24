@@ -1,12 +1,10 @@
 /**
- * Diese Komponente generiert einen Button in der Primärfarbe
- * der Applikation und sollte verwendet werden, wenn die Standard
- * Button Optik gefordert ist.
+ * Die Komponente stellt einen Button mit standardisiertem Styling bereit.
  * 
- * @component PrimaryButton
- * @param {string} text Button Text
- * @param {Function} clickHandler Eventhandler Funktion für das onClick Event
- * @returns {JSX.Element} PrimaryButton Komponente
+ * @component
+ * @param {string} text Der Button Text.
+ * @param {Function} clickHandler Die Event Handler Funktion für das onClick Event.
+ * @returns {JSX.Element} Die PrimaryButton Komponente.
  */
 function PrimaryButton({ text, clickHandler }) {
     return (
