@@ -6,6 +6,7 @@ import MultipleChoiceCard from "./components/MultipleChoiceCard.jsx";
 import EditMultipleChoiceModal from "./components/EditMultipleChoiceModal.jsx";
 import CreateMultipleChoiceModal from "./components/CreateMultipleChoiceModal.jsx";
 import PrimaryButton from "../../components/PrimaryButton.jsx";
+import HeadingContainer from "../../components/HeadingContainer.jsx";
 
 /**
  * Diese View Komponente generiert eine Seite,
@@ -169,17 +170,16 @@ function SingleTopicView() {
 
   return (
     <>
-      <div className="flex items-center justify-between mx-auto mb-7">
-        <span className="inline-block w-1/3">
+      <HeadingContainer>
+        <span className="inline-block md:w-1/3">
           {quizArr.length} {quizArr.length === 1 ? "Frage" : "Fragen"}
         </span>
-
         <div className="relative">
             {
                 editNameActive ? (
                   <input type="text" onBlur={editNameHandler} />
                 ) : (
-                   <h1 className="text-center text-2xl">
+                   <h1 className="md:text-center text-2xl">
                     Thema {topic ? topic.topicName : ""}
                    </h1>
                 )
@@ -191,22 +191,26 @@ function SingleTopicView() {
             />
         </div>
 
-        <div className="w-1/3 text-end">
+        <div className="mt-2 md:mt-0 md:w-1/3 md:text-end">
           <PrimaryButton
             text="Neue Frage"
             clickHandler={() => openModal("create")}
           />
         </div>
-      </div>
+       </HeadingContainer>
 
-      {quizArr.map((item, index) => (
-        <MultipleChoiceCard
-          key={index}
-          content={item}
-          openModal={() => openModal("edit", index)}
-          deleteQuizHandler={() => deleteQuizHandler(index)}
-        />
-      ))}
+      <section>
+        {
+            quizArr.map((item, index) => (
+                <MultipleChoiceCard
+                key={index}
+                content={item}
+                openModal={() => openModal("edit", index)}
+                deleteQuizHandler={() => deleteQuizHandler(index)}
+                />
+            ))
+        }
+      </section>
 
       {mode === "edit" ? (
         <EditMultipleChoiceModal

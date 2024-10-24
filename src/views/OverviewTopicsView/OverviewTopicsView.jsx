@@ -3,6 +3,7 @@ import TopicCard from "./components/TopicCard.jsx";
 import PrimaryButton from "../../components/PrimaryButton.jsx";
 import Modal from "../../components/Modal.jsx";
 import TextArea from "../../components/TextArea.jsx";
+import HeadingContainer from "../../components/HeadingContainer.jsx";
 
 /**
  * Diese View Komponente generiert die Themenübersicht Seite.
@@ -103,16 +104,17 @@ function OverviewTopicsView() {
 
   return (
     <>
-      <div className="flex items-center justify-between mx-auto mb-7">
-        <span className="inline-block w-1/3">
+      <HeadingContainer>
+        <span className="inline-block md:w-1/3">
           {topics.length} {topics.length === 1 ? "Thema" : "Themen"}
         </span>
-        <h1 className="text-center text-2xl">Alle Themen</h1>
-        <div className="w-1/3 text-end">
+        <h1 className="md:text-center text-2xl">Alle Themen</h1>
+        <div className="mt-2 md:mt-0 md:w-1/3 md:text-end">
           <PrimaryButton text="Neues Thema" clickHandler={() => setModalIsOpen(true)}/>
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-8 max-w-2xl mx-auto">
+       </HeadingContainer>
+
+      <div className="grid grid-cold-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
         {topics.map((topic, index) => (
           <TopicCard
             key={topic._id}

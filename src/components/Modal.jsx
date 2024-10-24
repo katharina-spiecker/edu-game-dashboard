@@ -1,7 +1,7 @@
 import PrimaryButton from "./PrimaryButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { ReactNode } from 'react'; // used in jsdoc
+import { ReactNode } from 'react';
 
 /**
  * 
@@ -36,7 +36,7 @@ function Modal({ isOpen, closeModal, saveText, children, saveHandler }) {
               onClick={closeModal}
             />
 
-            {children}
+            { children }
 
             <div className="absolute left-0 bottom-5 text-center w-full">
               <PrimaryButton text={saveText} clickHandler={saveHandler} />

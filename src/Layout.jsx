@@ -9,7 +9,7 @@ export default function Layout() {
                     <a className="me-7" href="/">Übersicht</a>
                 </nav>
             </header>
-            <main className="bg-slate-100 pt-10">
+            <main className="bg-slate-100 pt-5 md:pt-10">
                 <div className="mx-auto max-w-2xl px-4">
                     <Outlet />
                 </div>
