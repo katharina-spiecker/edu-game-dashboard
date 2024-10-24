@@ -3,15 +3,14 @@ import { faPenToSquare, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 /**
- * MultipleChoiceCard component
- * 
  * Diese Komponente erzeugt eine Box 
  * welche eine Quizfrage, die Antwortmöglichkeiten,
  * und welche Frage richtig ist darstellt.
  * 
- * @component
+ * @module SingleTopicView/MultipleChoiceCard
  * @param {Object} content besteht aus der Eigenschaft answers
  * @param {Function} openModal öffnet das Bearbeiten-Modal mit Frage und Antworten
+ * @returns {JSX.Element} MultipleChoiceCard Komponente
  */
 function MultipleChoiceCard({ content, openModal, deleteQuizHandler }) {
   

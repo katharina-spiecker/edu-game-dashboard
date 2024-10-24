@@ -1,19 +1,18 @@
-import { useParams } from "react-router-dom";
-import MultipleChoiceCard from "../components/MultipleChoiceCard.jsx";
-import PrimaryButton from "../components/PrimaryButton.jsx";
 import { useState, useEffect } from "react";
-import EditMultipleChoiceModal from "../components/EditMultipleChoiceModal.jsx";
-import CreateMultipleChoiceModal from "../components/CreateMultipleChoiceModal.jsx";
+import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import MultipleChoiceCard from "./components/MultipleChoiceCard.jsx";
+import EditMultipleChoiceModal from "./components/EditMultipleChoiceModal.jsx";
+import CreateMultipleChoiceModal from "./components/CreateMultipleChoiceModal.jsx";
+import PrimaryButton from "../../components/PrimaryButton.jsx";
 
 /**
- * SingleTopicView component
- *
  * Diese View Komponente generiert eine Seite,
  * welche die Fragen und Antworten zu einem einzelnes Thema anzeigt.
- *
- * @component
+ * 
+ * @module SingleTopicView
+ * @returns {JSX.Element} SingleTopicView Komponente
  */
 function SingleTopicView() {
   const { id } = useParams();

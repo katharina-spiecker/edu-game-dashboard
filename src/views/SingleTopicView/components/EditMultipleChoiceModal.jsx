@@ -1,10 +1,21 @@
-import PrimaryButton from "./PrimaryButton.jsx";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
-import TextArea from "./TextArea.jsx";
-import { useState } from "react";
+import TextArea from "../../../components/TextArea.jsx";
+import PrimaryButton from "../../../components/PrimaryButton.jsx";
 
-export default function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialContent}) {
+/**
+ * Diese Komponente ist ein Modal zum Bearbeiten einer 
+ * existierenden Quiz Frage und Antworten.
+ * 
+ * @module SingleTopicView/EditMultipleChoiceModal
+ * @param {boolean} isOpen Modal geöffnet oder geschlossen
+ * @param {Function} closeModal Funktion, welche zum Schließen aufgerufen wird
+ * @param {Function} saveEditHandler Zum Schließen des Modals
+ * @param {Objekt} initialContent Enthält Zustand eines Quizzes vor dem Bearbeiten
+ * @returns {JSX.Element} EditMultipleChoiceModal Komponente
+ */
+function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialContent}) {
     const [editQuizContent, setEditQuizContent] = useState(initialContent);
   
     function handleClose() {
@@ -131,3 +142,5 @@ export default function EditMultipleChoiceModal({isOpen, closeModal, saveEditHan
     </>
   );
 }
+
+export default EditMultipleChoiceModal;

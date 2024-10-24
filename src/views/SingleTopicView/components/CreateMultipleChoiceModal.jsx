@@ -1,10 +1,21 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faXmark, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
-import TextArea from "./TextArea.jsx";
-import PrimaryButton from "./PrimaryButton.jsx";
+import TextArea from "../../../components/TextArea.jsx";
+import PrimaryButton from "../../../components/PrimaryButton.jsx";
 
-export default function CreateMultipleChoiceModal({isOpen, closeModal, saveNewHandler}) {
+
+/**
+ * Diese Komponente stellt ein Modal zum Erstellen einer Multiplechoice
+ * Frage und Antworten bereit.
+ * 
+ * @module SingleTopicView/CreateMultipleChoiceModal
+ * @param {boolean} isOpen Modal geöffnet oder geschlossen
+ * @param {Function} closeModal Funktion, welche zum Schließen aufgerufen wird
+ * @param {Function} saveNewHandler Funktion, welche beim Klick auf den PrimaryButton aufgerufen wird
+ * @returns {JSX.Element} CreateMultipleChoiceModal Komponente
+ */
+function CreateMultipleChoiceModal({isOpen, closeModal, saveNewHandler}) {
     const [newMultipleChoiceQuiz, setNewMultipleChoiceQuiz] = useState({
         question: null,
         answers: [
@@ -184,3 +195,5 @@ export default function CreateMultipleChoiceModal({isOpen, closeModal, saveNewHa
     </>
   );
 }
+
+export default CreateMultipleChoiceModal;

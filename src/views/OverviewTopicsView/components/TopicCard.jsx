@@ -1,20 +1,17 @@
-import "../styles/TopicCard.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 /**
- * TopicCard component
- * 
  * Diese Komponente zeigt ein Quizthema an.
  * Es wird der Quizname, die Anzahl an Fragen in dem Quiz
  * und ein Bearbeiten icon angezeigt, welches zu der Übersicht
  * aller Fragen von diesem Quizthema leitet.
- *  
  * 
- * @component.
+ * @module OverviewTopicsView/TopicCard
  * @param {Objekt} topic Themen Daten darunter topicName, id, quiz
  * @param {Function} deleteHandler Funktion um Thema und alle Quizze die dazu gehören zu löschen
+ * @returns {JSX.Element} TopicCard Komponente
  */
 function TopicCard({ topic, deleteHandler }) {
 

@@ -1,10 +1,9 @@
 import PrimaryButton from "./PrimaryButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import {ReactNode} from 'react'; // used in jsdoc
+import { ReactNode } from 'react'; // used in jsdoc
 
 /**
- * Modal component
  * 
  * Diese Komponente stellt ein Modal und
  * seine grundlegenden Funktionen (öffnen, schließen) bereit.
@@ -13,12 +12,13 @@ import {ReactNode} from 'react'; // used in jsdoc
  * Der weitere Inhalt des Modals wird durch das children prop geliefert
  * und kann somit an Aufrufstelle befüllt werden.
  * 
- * @component
+ * @component Modal
  * @param {boolean} isOpen Modal geöffnet oder geschlossen
  * @param {Function} closeModal Funktion, welche zum Schließen aufgerufen wird
  * @param {string} saveText Text welcher in dem PrimaryButton erscheint
  * @param {ReactNode} children Inhalt des Modals
  * @param {Function} saveHandler Funktion, welche beim Klick auf den PrimaryButton aufgerufen wird
+ * @returns {JSX.Element} Modal Komponente
  */
 function Modal({ isOpen, closeModal, saveText, children, saveHandler }) {
   return (

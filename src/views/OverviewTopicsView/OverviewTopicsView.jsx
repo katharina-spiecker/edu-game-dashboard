@@ -1,15 +1,14 @@
-import TopicCard from "../components/TopicCard.jsx";
-import PrimaryButton from "../components/PrimaryButton.jsx";
 import { useState, useEffect } from "react";
-import Modal from "../components/Modal.jsx";
-import TextArea from "../components/TextArea.jsx";
+import TopicCard from "./components/TopicCard.jsx";
+import PrimaryButton from "../../components/PrimaryButton.jsx";
+import Modal from "../../components/Modal.jsx";
+import TextArea from "../../components/TextArea.jsx";
 
 /**
- * OverviewTopicsView component
- * 
  * Diese View Komponente generiert die Themenübersicht Seite.
  * 
- * @component
+ * @module OverviewTopicsView
+ * @returns {JSX.Element} OverviewTopicsView Komponente
  */
 function OverviewTopicsView() {
   const [topics, setTopics] = useState([]);

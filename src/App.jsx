@@ -2,8 +2,8 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import OverviewTopicsView from "./views/OverviewTopicsView.jsx";
-import SingleTopicView from './views/SingleTopicView.jsx';
+import OverviewTopicsView from "./views/OverviewTopicsView/OverviewTopicsView.jsx";
+import SingleTopicView from './views/SingleTopicView/SingleTopicView.jsx';
 import Layout from "./Layout.jsx";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
