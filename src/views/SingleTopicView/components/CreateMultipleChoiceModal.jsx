@@ -1,68 +1,67 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faXmark, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faXmark, faCirclePlus} from "@fortawesome/free-solid-svg-icons";
 import TextArea from "../../../components/TextArea.jsx";
 import PrimaryButton from "../../../components/PrimaryButton.jsx";
-
 
 /**
  * Die Komponente stellt ein Modal zum Erstellen einer Multiple-Choice-Frage bereit.
  * Ermöglicht das Erstellen der Frage und Antworten und die Auswahl der korrekten Antwort.
- * 
+ *
  * @component
  * @param {boolean} isOpen Gibt an, ob das Modal geöffnet oder geschlossen.
  * @param {Function} closeModal Die Funktion, welche zum Schließen des Modals aufgerufen wird.
  * @param {Function} saveNewHandler Die Funktion, welche beim Klick auf den Hauptbutton aufgerufen wird.
  * @returns {JSX.Element} Die CreateMultipleChoiceModal Komponente.
  */
-function CreateMultipleChoiceModal({isOpen, closeModal, saveNewHandler}) {
-    const [newMultipleChoiceQuiz, setNewMultipleChoiceQuiz] = useState({
-        question: null,
-        answers: [
-          {
-            text: null,
-            correct: false,
-          },
-          {
-            text: null,
-            correct: false,
-          },
-        ],
+function CreateMultipleChoiceModal({ isOpen, closeModal, saveNewHandler }) {
+  const [newMultipleChoiceQuiz, setNewMultipleChoiceQuiz] = useState({
+    question: null,
+    answers: [
+      {
+        text: null,
+        correct: false,
+      },
+      {
+        text: null,
+        correct: false,
+      },
+    ],
+  });
+
+  function handleClose() {
+    setNewMultipleChoiceQuiz({
+      question: null,
+      answers: [
+        {
+          text: null,
+          correct: false,
+        },
+        {
+          text: null,
+          correct: false,
+        },
+      ],
     });
+    closeModal();
+  }
 
-    function handleClose() {
-        setNewMultipleChoiceQuiz({
-            question: null,
-            answers: [
-              {
-                text: null,
-                correct: false,
-              },
-              {
-                text: null,
-                correct: false,
-              },
-            ],
-          });
-        closeModal();
-    }
+  /**
+   * Bearbeitet Frage.
+   * @param {string} newText neuer Text für die Frage
+   */
+  function updateQuestion(newText) {
+    // update question, copy existing answers
+    setNewMultipleChoiceQuiz((prevState) => {
+      return {
+        quizId: prevState.quizId,
+        question: newText,
+        answers: prevState.answers,
+      };
+    });
+  }
 
-    /**
-     * Bearbeitet Frage.
-     * @param {string} newText neuer Text für die Frage
-     */
-    function updateQuestion(newText) {
-        // update question, copy existing answers
-        setNewMultipleChoiceQuiz((prevState) => {
-        return {
-            quizId: prevState.quizId,
-            question: newText,
-            answers: prevState.answers,
-        };
-        });
-    }
-
-    /**
+  /**
    * Aktualisiert Antworttext.
    * @param {number} index Index der Antwort im answers array von quiz ObjeKt
    * @param {string} newText neuer Antworttext
@@ -128,8 +127,7 @@ function CreateMultipleChoiceModal({isOpen, closeModal, saveNewHandler}) {
     });
   }
 
-  
-    return (
+  return (
     <>
       {isOpen && (
         <>
@@ -187,7 +185,10 @@ function CreateMultipleChoiceModal({isOpen, closeModal, saveNewHandler}) {
             )}
 
             <div className="absolute left-0 bottom-5 text-center w-full">
-              <PrimaryButton text="Speichern" clickHandler={() => saveNewHandler(newMultipleChoiceQuiz)} />
+              <PrimaryButton
+                text="Speichern"
+                clickHandler={() => saveNewHandler(newMultipleChoiceQuiz)}
+              />
             </div>
           </div>
         </>

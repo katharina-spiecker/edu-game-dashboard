@@ -8,7 +8,7 @@ import PrimaryButton from "../../../components/PrimaryButton.jsx";
  * Die Komponente stellt ein Modal zum Bearbeiten einer existierenden Multiple-Choice-Frage bereit.
  * Ermöglicht das Bearbeiten der Frage und Antworten, das Löschen oder Hinzufügen von Antwortmöglichkeiten
  * und die Auswahl der korrekten Antwort.
- * 
+ *
  * @component
  * @param {boolean} isOpen Gibt an, ob das Modal geöffnet oder geschlossen ist.
  * @param {Function} closeModal Die Funktion, welche zum Schließen des Modals aufgerufen wird.
@@ -17,61 +17,62 @@ import PrimaryButton from "../../../components/PrimaryButton.jsx";
  * @returns {JSX.Element} Die EditMultipleChoiceModal Komponente.
  */
 function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialContent}) {
-    const [editQuizContent, setEditQuizContent] = useState(initialContent);
-  
-    function handleClose() {
-        setEditQuizContent(null);
-        closeModal();
-    }
+  const [editQuizContent, setEditQuizContent] = useState(initialContent);
 
-    /**
-     * Bearbeitet existierende Fragen und Antworten.
-     * @param {string} newText neuer Text für die Frage
-     */
-    function updateQuestion(newText) {
-        // update question, copy existing answers
-        setEditQuizContent((prevState) => {
-        return {
-            quizId: prevState.quizId,
-            question: newText,
-            answers: prevState.answers
+  function handleClose() {
+    setEditQuizContent(null);
+    closeModal();
+  }
+
+  /**
+   * Bearbeitet existierende Fragen und Antworten.
+   * @param {string} newText neuer Text für die Frage
+   */
+  function updateQuestion(newText) {
+    // update question, copy existing answers
+    setEditQuizContent((prevState) => {
+      return {
+        quizId: prevState.quizId,
+        question: newText,
+        answers: prevState.answers,
+      };
+    });
+  }
+
+  /**
+   * Speichert die Auswahl der richtigen Antwort für bearbeitete Quizfragen.
+   * @param {number} index
+   */
+  function updateCorrectAnswer(index) {
+    setEditQuizContent((prevState) => {
+      // make deep clone of existing answers (deep clone necessary since array of objects)
+      const updatedAnswers = structuredClone(prevState.answers);
+
+      // setzte alle auf false, außer die, die neu ausgewählt wurde
+      updatedAnswers.forEach((answer, answerIndex) => {
+        if (index === answerIndex) {
+          answer.correct = true;
+        } else {
+          answer.correct = false;
         }
-        });
-    }
+      });
 
-    /**
-     * Speichert die Auswahl der richtigen Antwort für bearbeitete Quizfragen.
-     * @param {number} index 
-     */
-    function updateCorrectAnswer(index) {
-        setEditQuizContent((prevState) => {
-            // make deep clone of existing answers (deep clone necessary since array of objects)
-            const updatedAnswers = structuredClone(prevState.answers);
+      return {
+        quizId: prevState.quizId,
+        question: prevState.question,
+        answers: updatedAnswers,
+      };
+    });
+  }
 
-            // setzte alle auf false, außer die, die neu ausgewählt wurde
-            updatedAnswers.forEach((answer, answerIndex) => {
-                if (index === answerIndex) {
-                answer.correct = true;
-                } else {
-                answer.correct = false;
-                }
-            });
-
-            return {
-                quizId: prevState.quizId,
-                question: prevState.question,
-                answers: updatedAnswers,
-            };
-        });
-    }
-
-    /**
+  /**
    * Speichert veränderten oder neu erstellten Antworttext
    * @param {number} index Index der Antwort im answers array von quiz ObjeKt
    * @param {string} newText neuer Antworttext
    */
   function updateAnswer(index, newText) {
-    setEditQuizContent((prevState) => { // save updated answers
+    setEditQuizContent((prevState) => {
+      // save updated answers
       // make deep clone of existing answers (deep clone necessary since array of objects)
       const updatedAnswers = structuredClone(prevState.answers);
       updatedAnswers[index].text = newText;
@@ -84,7 +85,7 @@ function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialCo
     });
   }
 
-    return (
+  return (
     <>
       {isOpen && (
         <>
@@ -127,15 +128,16 @@ function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialCo
                   id={"antwort-" + (index + 1)}
                   label={"Antwort " + (index + 1)}
                   defaultValue={answer.text}
-                  changeHandler={(newText) =>
-                    updateAnswer(index, newText)
-                  }
+                  changeHandler={(newText) => updateAnswer(index, newText)}
                 />
               </div>
             ))}
 
             <div className="absolute left-0 bottom-5 text-center w-full">
-              <PrimaryButton text="Änderungen speichern" clickHandler={() => saveEditHandler(editQuizContent)} />
+              <PrimaryButton
+                text="Änderungen speichern"
+                clickHandler={() => saveEditHandler(editQuizContent)}
+              />
             </div>
           </div>
         </>

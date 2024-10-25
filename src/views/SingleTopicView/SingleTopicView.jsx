@@ -10,7 +10,7 @@ import HeadingContainer from "../../components/HeadingContainer.jsx";
 
 /**
  * Die Komponente generiert eine Seite, welche alle Fragen und Antworten zu einem bestimmten Thema anzeigt.
- * 
+ *
  * @component
  * @returns {JSX.Element} Die SingleTopicView Komponente.
  */
@@ -55,7 +55,6 @@ function SingleTopicView() {
   }
 
   function saveNewHandler(newMultipleChoiceQuiz) {
-
     resetModal();
 
     fetch(`http://localhost:3000/api/topics/${id}/quizzes`, {
@@ -65,24 +64,23 @@ function SingleTopicView() {
       },
       body: JSON.stringify({
         question: newMultipleChoiceQuiz.question,
-        answers: newMultipleChoiceQuiz.answers
-      })
+        answers: newMultipleChoiceQuiz.answers,
+      }),
     })
-    .then((res) => {
+      .then((res) => {
         if (!res.ok) {
-            throw new Error();
+          throw new Error();
         }
         return res.json();
-    })
-    .then(data => {
+      })
+      .then((data) => {
         // API returns new quiz: add to state
         setQuizArr((prevState) => {
-            return [...prevState, data];
+          return [...prevState, data];
         });
-    })
-    .catch((err) => console.error(err));
+      })
+      .catch((err) => console.error(err));
   }
-    
 
   /**
    * Delete quiz object from quizArr state
@@ -99,45 +97,50 @@ function SingleTopicView() {
       return updatedQuizArr;
     });
 
-    fetch(`http://localhost:3000/api/topics/${id}/quizzes/${quizId}`, { method: "DELETE" })
-    .then((res) => {
-    if (!res.ok) {
-        throw new Error();
-    }
+    fetch(`http://localhost:3000/api/topics/${id}/quizzes/${quizId}`, {
+      method: "DELETE",
     })
-    .catch((error) => console.error(error.message));
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error();
+        }
+      })
+      .catch((error) => console.error(error.message));
   }
 
   /**
    * Saves edited quiz item.
    */
   function saveEditHandler(editQuizContent) {
-    fetch(`http://localhost:3000/api/topics/${id}/quizzes/${editQuizContent.quizId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        question: editQuizContent.question,
-        answers: editQuizContent.answers
-      })
-    })
-    .then((res) => {
+    fetch(
+      `http://localhost:3000/api/topics/${id}/quizzes/${editQuizContent.quizId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question: editQuizContent.question,
+          answers: editQuizContent.answers,
+        }),
+      }
+    )
+      .then((res) => {
         if (res.ok) {
-            // success: aktualisiere Frontend
-            setQuizArr((prevState) => {
-                const updatedQuizArr = [...prevState];
-                updatedQuizArr[quizIndex] = editQuizContent;
-                return updatedQuizArr;
-            });
-            resetModal();
+          // success: aktualisiere Frontend
+          setQuizArr((prevState) => {
+            const updatedQuizArr = [...prevState];
+            updatedQuizArr[quizIndex] = editQuizContent;
+            return updatedQuizArr;
+          });
+          resetModal();
         } else {
-            throw new Error();
+          throw new Error();
         }
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.error(error.message);
-    });
+      });
   }
 
   function editNameHandler(event) {
@@ -149,22 +152,22 @@ function SingleTopicView() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        topicName: newName
-      })
+        topicName: newName,
+      }),
     })
-    .then((res) => {
+      .then((res) => {
         if (res.ok) {
-            setTopic(prev => {
-                return {...prev, topicName: newName}
-            })
-            setEditNameActive(false);
+          setTopic((prev) => {
+            return { ...prev, topicName: newName };
+          });
+          setEditNameActive(false);
         } else {
-            throw new Error();
+          throw new Error();
         }
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.error(error.message);
-    });
+      });
   }
 
   return (
@@ -174,20 +177,18 @@ function SingleTopicView() {
           {quizArr.length} {quizArr.length === 1 ? "Frage" : "Fragen"}
         </span>
         <div className="relative">
-            {
-                editNameActive ? (
-                  <input type="text" onBlur={editNameHandler} />
-                ) : (
-                   <h1 className="md:text-center text-2xl">
-                    {topic ? topic.topicName : "Thema"}
-                   </h1>
-                )
-            }
-            <FontAwesomeIcon
-                icon={faPenToSquare}
-                className="topic-name-edit__icon absolute hover:cursor-pointer"
-                onClick={() => setEditNameActive(true)}
-            />
+          {editNameActive ? (
+            <input type="text" onBlur={editNameHandler} />
+          ) : (
+            <h1 className="md:text-center text-2xl">
+              {topic ? topic.topicName : "Thema"}
+            </h1>
+          )}
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            className="topic-name-edit__icon absolute hover:cursor-pointer"
+            onClick={() => setEditNameActive(true)}
+          />
         </div>
 
         <div className="mt-2 md:mt-0 md:w-1/3 md:text-end">
@@ -196,19 +197,17 @@ function SingleTopicView() {
             clickHandler={() => openModal("create")}
           />
         </div>
-       </HeadingContainer>
+      </HeadingContainer>
 
       <section>
-        {
-            quizArr.map((item, index) => (
-                <MultipleChoiceCard
-                key={index}
-                content={item}
-                openModal={() => openModal("edit", index)}
-                deleteQuizHandler={() => deleteQuizHandler(index)}
-                />
-            ))
-        }
+        {quizArr.map((item, index) => (
+          <MultipleChoiceCard
+            key={index}
+            content={item}
+            openModal={() => openModal("edit", index)}
+            deleteQuizHandler={() => deleteQuizHandler(index)}
+          />
+        ))}
       </section>
 
       {mode === "edit" ? (
@@ -225,7 +224,6 @@ function SingleTopicView() {
           saveNewHandler={saveNewHandler}
         />
       )}
-
     </>
   );
 }

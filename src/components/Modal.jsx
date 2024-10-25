@@ -1,12 +1,12 @@
 import PrimaryButton from "./PrimaryButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 /**
- * 
+ *
  * Die Komponente stellt ein Modal mit grundlegenden Funktionen (öffnen und schließen) bereit.
- * 
+ *
  * @component
  * @param {boolean} isOpen Gibt an, ob das Modal geöffnet oder geschlossen ist.
  * @param {Function} closeModal Die Funktion, welche zum Schließen des Modals aufgerufen wird.
@@ -22,7 +22,8 @@ function Modal({ isOpen, closeModal, saveText, children, saveHandler }) {
         <>
           <div
             className="opacity-50 bg-slate-900 fixed top-0 bottom-0 left-0 right-0"
-            onClick={closeModal}></div>
+            onClick={closeModal}
+          ></div>
 
           <div className="bg-white shadow shadow-slate-300 rounded-2xl p-4 mt-5 z-1 min-w-80 min-h-80 fixed top-0 mx-4 mx-auto left-1/2 -translate-x-1/2 md:w-96 pb-20">
             <FontAwesomeIcon
@@ -31,7 +32,7 @@ function Modal({ isOpen, closeModal, saveText, children, saveHandler }) {
               onClick={closeModal}
             />
 
-            { children }
+            {children}
 
             <div className="absolute left-0 bottom-5 text-center w-full">
               <PrimaryButton text={saveText} clickHandler={saveHandler} />

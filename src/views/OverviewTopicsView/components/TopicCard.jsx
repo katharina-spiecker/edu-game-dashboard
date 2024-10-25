@@ -5,15 +5,14 @@ import { useNavigate } from "react-router-dom";
 /**
  * Diese Komponente zeigt ein Quizthema an.
  * Es wird das Quizthema, die Anzahl an Fragen in dem Quiz, ein Löschen-Icon und ein Bearbeiten-Icon angezeigt.
- * Das Bearbeiten-Icon führt zu der Thema-Detailseite. 
- * 
+ * Das Bearbeiten-Icon führt zu der Thema-Detailseite.
+ *
  * @component
  * @param {Objekt} topic Die Themendaten darunter topicName, id und quiz.
  * @param {Function} deleteHandler Die Funktion, welche das Thema inklusive aller dazugehörigen Multiple-Choice-Fragen löscht.
  * @returns {JSX.Element} Die TopicCard Komponente.
  */
 function TopicCard({ topic, deleteHandler }) {
-
   const navigate = useNavigate();
 
   return (
