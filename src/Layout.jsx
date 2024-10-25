@@ -4,7 +4,7 @@ export default function Layout() {
   return (
     <>
       <header className="bg-yellow-300">
-        <nav className="sm:container mx-auto py-3 px-4">
+        <nav className="mx-auto max-w-2xl py-3 px-4">
           <a className="me-7" href="/">
             Alle Themen
           </a>
