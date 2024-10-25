@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
  * Das Bearbeiten-Icon führt zu der Thema-Detailseite.
  *
  * @component
- * @param {Objekt} topic Die Themendaten darunter topicName, id und quiz.
+ * @param {Objekt} topic Die Themendaten darunter topicName, id und quizSize.
  * @param {Function} deleteHandler Die Funktion, welche das Thema inklusive aller dazugehörigen Multiple-Choice-Fragen löscht.
  * @returns {JSX.Element} Die TopicCard Komponente.
  */
@@ -19,7 +19,7 @@ function TopicCard({ topic, deleteHandler }) {
     <div className="bg-white shadow shadow-slate-300 p-4 relative rounded-2xl h-40 flex justify-center items-center">
       <div>{topic.topicName}</div>
       <span className="absolute topic-card__number text-gray-500">
-        {topic.quiz.length} {topic.quiz.length === 1 ? "Frage" : "Fragen"}
+        {topic.quizSize} {topic.quizSize === 1 ? "Frage" : "Fragen"}
       </span>
       <FontAwesomeIcon
         icon={faPenToSquare}
