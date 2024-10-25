@@ -74,7 +74,6 @@ function SingleTopicView() {
         return res.json();
       })
       .then((data) => {
-        // API returns new quiz: add to state
         setQuizArr((prevState) => {
           return [...prevState, data];
         });
@@ -90,7 +89,6 @@ function SingleTopicView() {
     const quizId = quizArr[index].quizId;
 
     setQuizArr((prevState) => {
-      // clone arr and remove object
       const updatedQuizArr = [...prevState];
       updatedQuizArr.splice(index, 1);
 
@@ -127,7 +125,6 @@ function SingleTopicView() {
     )
       .then((res) => {
         if (res.ok) {
-          // success: aktualisiere Frontend
           setQuizArr((prevState) => {
             const updatedQuizArr = [...prevState];
             updatedQuizArr[quizIndex] = editQuizContent;

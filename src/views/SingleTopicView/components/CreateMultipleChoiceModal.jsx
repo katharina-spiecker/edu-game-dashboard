@@ -51,7 +51,7 @@ function CreateMultipleChoiceModal({ isOpen, closeModal, saveNewHandler }) {
    * @param {string} newText neuer Text für die Frage
    */
   function updateQuestion(newText) {
-    // update question, copy existing answers
+    // aktualisiere Fragen, kopiere existierende Antworten
     setNewMultipleChoiceQuiz((prevState) => {
       return {
         quizId: prevState.quizId,
@@ -68,8 +68,8 @@ function CreateMultipleChoiceModal({ isOpen, closeModal, saveNewHandler }) {
    */
   function updateAnswer(index, newText) {
     setNewMultipleChoiceQuiz((prevState) => {
-      // save updated answers
-      // make deep clone of existing answers (deep clone necessary since array of objects)
+      // speichere aktualisierte Antworten
+      // verwende structuredClone da Array aus Objekten
       const updatedAnswers = structuredClone(prevState.answers);
       updatedAnswers[index].text = newText;
 
@@ -87,7 +87,6 @@ function CreateMultipleChoiceModal({ isOpen, closeModal, saveNewHandler }) {
    */
   function updateCorrectAnswer(index) {
     setNewMultipleChoiceQuiz((prevState) => {
-      // make deep clone of existing answers (deep clone necessary since array of objects)
       const updatedAnswers = structuredClone(prevState.answers);
 
       // setzte alle auf false, außer die, die neu ausgewählt wurde

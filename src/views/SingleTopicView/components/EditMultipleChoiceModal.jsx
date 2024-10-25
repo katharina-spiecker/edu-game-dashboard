@@ -67,13 +67,11 @@ function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialCo
 
   /**
    * Speichert veränderten oder neu erstellten Antworttext
-   * @param {number} index Index der Antwort im answers array von quiz ObjeKt
+   * @param {number} index Index der Antwort im answers array von quiz Objekt
    * @param {string} newText neuer Antworttext
    */
   function updateAnswer(index, newText) {
     setEditQuizContent((prevState) => {
-      // save updated answers
-      // make deep clone of existing answers (deep clone necessary since array of objects)
       const updatedAnswers = structuredClone(prevState.answers);
       updatedAnswers[index].text = newText;
 
