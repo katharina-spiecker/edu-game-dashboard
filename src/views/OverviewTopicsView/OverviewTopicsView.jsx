@@ -36,17 +36,12 @@ function OverviewTopicsView() {
    * Setzt leeren Array als Standardwert der quiz Eigenschaft.
    */
   function saveNewTopic() {
-    const newTopic = {
-      topicName: newTopicName,
-      quiz: [],
-    };
-
     fetch("http://localhost:3000/api/topics", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newTopic),
+      body: JSON.stringify({topicName: newTopicName}),
     })
       .then((res) => {
         if (!res.ok) {
@@ -58,7 +53,10 @@ function OverviewTopicsView() {
         // speichere die id von mongodb
         newTopic._id = data.insertedId;
         setTopics((prevTopics) => {
-          return [...prevTopics, newTopic];
+          return [...prevTopics, {
+            topicName: newTopicName,
+            quiz: [],
+          }];
         });
       })
       .finally(() => {
