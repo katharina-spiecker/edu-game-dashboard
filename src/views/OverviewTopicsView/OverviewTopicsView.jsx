@@ -51,11 +51,12 @@ function OverviewTopicsView() {
       })
       .then((data) => {
         // speichere die id von mongodb
-        newTopic._id = data.insertedId;
         setTopics((prevTopics) => {
           return [...prevTopics, {
+            _id: data.insertedId,
             topicName: newTopicName,
-            quiz: [],
+            quizSize: 0,
+            quiz: []
           }];
         });
       })
