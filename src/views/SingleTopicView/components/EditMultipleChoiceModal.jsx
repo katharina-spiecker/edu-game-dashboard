@@ -32,7 +32,7 @@ function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialCo
     // update question, copy existing answers
     setEditQuizContent((prevState) => {
       return {
-        quizId: prevState.quizId,
+        _id: prevState._id,
         question: newText,
         answers: prevState.answers,
       };
@@ -45,23 +45,16 @@ function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialCo
    */
   function updateCorrectAnswer(index) {
     setEditQuizContent((prevState) => {
-      // make deep clone of existing answers (deep clone necessary since array of objects)
-      const updatedAnswers = structuredClone(prevState.answers);
-
+      const updatedQuestion = structuredClone(prevState); // deep clone
       // setzte alle auf false, außer die, die neu ausgewählt wurde
-      updatedAnswers.forEach((answer, answerIndex) => {
+      updatedQuestion.answers.forEach((answer, answerIndex) => {
         if (index === answerIndex) {
           answer.correct = true;
         } else {
           answer.correct = false;
         }
       });
-
-      return {
-        quizId: prevState.quizId,
-        question: prevState.question,
-        answers: updatedAnswers,
-      };
+      return updatedQuestion;
     });
   }
 
@@ -72,14 +65,9 @@ function EditMultipleChoiceModal({isOpen, closeModal, saveEditHandler, initialCo
    */
   function updateAnswer(index, newText) {
     setEditQuizContent((prevState) => {
-      const updatedAnswers = structuredClone(prevState.answers);
-      updatedAnswers[index].text = newText;
-
-      return {
-        quizId: prevState.quizId,
-        question: prevState.question,
-        answers: updatedAnswers,
-      };
+      const updatedQuestion = structuredClone(prevState);
+      updatedQuestion.answers[index].text = newText;
+      return updatedQuestion;
     });
   }
 

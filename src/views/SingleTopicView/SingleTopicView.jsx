@@ -17,15 +17,15 @@ import HeadingContainer from "../../components/HeadingContainer.jsx";
 function SingleTopicView() {
   const { id } = useParams();
 
-  const [topic, setTopic] = useState(null);
-  const [quizArr, setQuizArr] = useState([]);
+  const [topicName, setTopicName] = useState("");
+  const [questions, setQuestions] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [mode, setMode] = useState(null);
-  const [quizIndex, setQuizIndex] = useState(null);
+  const [questionIndex, setQuestionIndex] = useState(null);
   const [editNameActive, setEditNameActive] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/topics/${id}`)
+    fetch(`http://localhost:3000/api/quizzes/${id}`)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -34,15 +34,15 @@ function SingleTopicView() {
         }
       })
       .then((data) => {
-        setTopic(data);
-        setQuizArr(data.quiz);
+        setTopicName(data.topic);
+        setQuestions(data.questions);
       })
       .catch((error) => console.error(error.message));
   }, []);
 
   function openModal(mode = "", index) {
     if (mode === "edit") {
-      setQuizIndex(index);
+      setQuestionIndex(index);
     }
     setMode(mode);
     setModalIsOpen(true);
@@ -51,13 +51,13 @@ function SingleTopicView() {
   function resetModal() {
     setModalIsOpen(false);
     setMode(null);
-    setQuizIndex(null);
+    setQuestionIndex(null);
   }
 
   function saveNewHandler(newMultipleChoiceQuiz) {
     resetModal();
 
-    fetch(`http://localhost:3000/api/topics/${id}/quizzes`, {
+    fetch(`http://localhost:3000/api/quizzes/${id}/questions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,28 +74,24 @@ function SingleTopicView() {
         return res.json();
       })
       .then((data) => {
-        setQuizArr((prevState) => {
+        setQuestions((prevState) => {
           return [...prevState, data];
         });
       })
       .catch((err) => console.error(err));
   }
 
-  /**
-   * Delete quiz object from quizArr state
-   * @param {string} index
-   */
   function deleteQuizHandler(index) {
-    const quizId = quizArr[index].quizId;
+    const questionId = questions[index]._id;
 
-    setQuizArr((prevState) => {
-      const updatedQuizArr = [...prevState];
-      updatedQuizArr.splice(index, 1);
+    setQuestions((prevState) => {
+      const updatedQuestions = [...prevState];
+      updatedQuestions.splice(index, 1);
 
-      return updatedQuizArr;
+      return updatedQuestions;
     });
 
-    fetch(`http://localhost:3000/api/topics/${id}/quizzes/${quizId}`, {
+    fetch(`http://localhost:3000/api/quizzes/${id}/questions/${questionId}`, {
       method: "DELETE",
     })
       .then((res) => {
@@ -106,12 +102,10 @@ function SingleTopicView() {
       .catch((error) => console.error(error.message));
   }
 
-  /**
-   * Saves edited quiz item.
-   */
   function saveEditHandler(editQuizContent) {
+    console.log(editQuizContent)
     fetch(
-      `http://localhost:3000/api/topics/${id}/quizzes/${editQuizContent.quizId}`,
+      `http://localhost:3000/api/quizzes/${id}/questions/${editQuizContent._id}`,
       {
         method: "PUT",
         headers: {
@@ -125,10 +119,10 @@ function SingleTopicView() {
     )
       .then((res) => {
         if (res.ok) {
-          setQuizArr((prevState) => {
-            const updatedQuizArr = [...prevState];
-            updatedQuizArr[quizIndex] = editQuizContent;
-            return updatedQuizArr;
+          setQuestions((prevState) => {
+            const updatedQuestions = [...prevState];
+            updatedQuestions[questionIndex] = editQuizContent;
+            return updatedQuestions;
           });
           resetModal();
         } else {
@@ -141,22 +135,20 @@ function SingleTopicView() {
   }
 
   function editNameHandler(event) {
-    const newName = event.target.value;
+    const newTopicName = event.target.value;
 
-    fetch(`http://localhost:3000/api/topics/${id}`, {
+    fetch(`http://localhost:3000/api/quizzes/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        topicName: newName,
+        topic: newTopicName,
       }),
     })
       .then((res) => {
         if (res.ok) {
-          setTopic((prev) => {
-            return { ...prev, topicName: newName };
-          });
+          setTopicName(newTopicName);
           setEditNameActive(false);
         } else {
           throw new Error();
@@ -171,14 +163,14 @@ function SingleTopicView() {
     <>
       <HeadingContainer>
         <span className="inline-block md:w-1/3">
-          {quizArr.length} {quizArr.length === 1 ? "Frage" : "Fragen"}
+          {questions.length} {questions.length === 1 ? "Frage" : "Fragen"}
         </span>
         <div className="relative">
           {editNameActive ? (
             <input type="text" onBlur={editNameHandler} />
           ) : (
             <h1 className="md:text-center text-2xl">
-              {topic ? topic.topicName : "Thema"}
+              {topicName}
             </h1>
           )}
           <FontAwesomeIcon
@@ -197,7 +189,7 @@ function SingleTopicView() {
       </HeadingContainer>
 
       <section>
-        {quizArr.map((item, index) => (
+        {questions.map((item, index) => (
           <MultipleChoiceCard
             key={index}
             content={item}
@@ -209,7 +201,7 @@ function SingleTopicView() {
 
       {mode === "edit" ? (
         <EditMultipleChoiceModal
-          initialContent={quizArr[quizIndex]}
+          initialContent={questions[questionIndex]}
           isOpen={modalIsOpen}
           closeModal={resetModal}
           saveEditHandler={saveEditHandler}

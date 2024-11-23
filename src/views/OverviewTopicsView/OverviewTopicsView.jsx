@@ -17,7 +17,7 @@ function OverviewTopicsView() {
   const [newTopicName, setNewTopicName] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/topics")
+    fetch("http://localhost:3000/api/quizzes")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -26,6 +26,7 @@ function OverviewTopicsView() {
         }
       })
       .then((data) => {
+        console.log(data)
         setTopics(data);
       })
       .catch((error) => console.error(error.message));
@@ -36,12 +37,12 @@ function OverviewTopicsView() {
    * Setzt leeren Array als Standardwert der quiz Eigenschaft.
    */
   function saveNewTopic() {
-    fetch("http://localhost:3000/api/topics", {
+    fetch("http://localhost:3000/api/quizzes", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({topicName: newTopicName}),
+      body: JSON.stringify({topic: newTopicName}),
     })
       .then((res) => {
         if (!res.ok) {
@@ -54,7 +55,8 @@ function OverviewTopicsView() {
         setTopics((prevTopics) => {
           return [...prevTopics, {
             _id: data.insertedId,
-            topicName: newTopicName,
+            topic: newTopicName,
+            gameCode: data.gameCode,
             quizSize: 0,
             quiz: []
           }];
@@ -82,9 +84,7 @@ function OverviewTopicsView() {
       return updatedState;
     });
 
-    const id = topics[index]._id;
-
-    fetch(`http://localhost:3000/api/topics/${id}`, { method: "DELETE" })
+    fetch(`http://localhost:3000/api/quizzes/${topics[index]._id}`, { method: "DELETE" })
       .then((res) => {
         if (!res.ok) {
           throw new Error();
@@ -104,7 +104,7 @@ function OverviewTopicsView() {
         <h1 className="md:text-center text-2xl">Alle Themen</h1>
         <div className="mt-2 md:mt-0 md:w-1/3 md:text-end">
           <PrimaryButton
-            text="Neues Thema"
+            text="Neues Quizthema"
             clickHandler={() => setModalIsOpen(true)}
           />
         </div>
