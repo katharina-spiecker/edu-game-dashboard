@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import TopicCard from "./components/TopicCard.jsx";
+import QuizInfoCard from "./components/QuizInfoCard.jsx";
 import PrimaryButton from "../../components/PrimaryButton.jsx";
 import Modal from "../../components/Modal.jsx";
 import TextArea from "../../components/TextArea.jsx";
@@ -112,7 +112,7 @@ function OverviewTopicsView() {
 
       <div className="grid grid-cold-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
         {topics.map((topic, index) => (
-          <TopicCard
+          <QuizInfoCard
             key={topic._id}
             topic={topic}
             deleteHandler={() => deleteHandler(index)}

@@ -25,7 +25,7 @@ function Modal({ isOpen, closeModal, saveText, children, saveHandler }) {
             onClick={closeModal}
           ></div>
 
-          <div className="bg-white shadow shadow-slate-300 rounded-2xl p-4 mt-5 z-1 min-w-80 min-h-80 fixed top-0 mx-4 mx-auto left-1/2 -translate-x-1/2 md:w-96 pb-20">
+          <div className="bg-white shadow shadow-slate-300 rounded-2xl p-4 mt-5 z-1 min-w-80 fixed top-0 mx-4 mx-auto left-1/2 -translate-x-1/2 md:w-96 pb-20">
             <FontAwesomeIcon
               icon={faXmark}
               className="absolute top-4 right-4 hover:cursor-pointer"
