@@ -126,6 +126,14 @@ function CreateMultipleChoiceModal({ isOpen, closeModal, saveNewHandler }) {
     });
   }
 
+  /**
+   * Speichert Quiz und setzt Modal zurück.
+   */
+  function onClickSave() {
+    saveNewHandler(newMultipleChoiceQuiz);
+    handleClose();
+  }
+
   return (
     <>
       {isOpen && (
@@ -186,7 +194,7 @@ function CreateMultipleChoiceModal({ isOpen, closeModal, saveNewHandler }) {
             <div className="absolute left-0 bottom-5 text-center w-full">
               <PrimaryButton
                 text="Speichern"
-                clickHandler={() => saveNewHandler(newMultipleChoiceQuiz)}
+                clickHandler={onClickSave}
               />
             </div>
           </div>

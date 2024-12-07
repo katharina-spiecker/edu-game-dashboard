@@ -1,4 +1,3 @@
-# React + Tailwind Multiple Choice Quiz Dashboard
+# **Quiz Dashboard Configuration App**  
 
-This Dashboard was created as the Frontend-App for an Education Software.
-It can be used to create multiple quiz topics and multiple choice questions for each quiz.
+This repository contains a **React.js** application styled with **Tailwind CSS**, developed as part of a thesis project. The app serves as a dashboard for configuring quizzes, allowing users to create, edit, and manage quizzes through an intuitive user interface.
