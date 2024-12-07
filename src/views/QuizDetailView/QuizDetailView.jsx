@@ -9,12 +9,12 @@ import PrimaryButton from "../../components/PrimaryButton.jsx";
 import HeadingContainer from "../../components/HeadingContainer.jsx";
 
 /**
- * Die Komponente generiert eine Seite, welche alle Fragen und Antworten zu einem bestimmten Thema anzeigt.
+ * Die Komponente generiert die Quidetailseite, welche alle Multiple-Choice-Fragen zu einem bestimmten Quiz anzeigt.
  *
  * @component
- * @returns {JSX.Element} Die SingleTopicView Komponente.
+ * @returns {JSX.Element} Die QuizDetailView Komponente.
  */
-function SingleTopicView() {
+function QuizDetailView() {
   const { id } = useParams();
 
   const [topicName, setTopicName] = useState("");
@@ -96,14 +96,13 @@ function SingleTopicView() {
     })
       .then((res) => {
         if (!res.ok) {
-          throw new Error();
+          throw new Error("deletion failed");
         }
       })
       .catch((error) => console.error(error.message));
   }
 
   function saveEditHandler(editQuizContent) {
-    console.log(editQuizContent)
     fetch(
       `http://localhost:3000/api/quizzes/${id}/questions/${editQuizContent._id}`,
       {
@@ -126,7 +125,7 @@ function SingleTopicView() {
           });
           resetModal();
         } else {
-          throw new Error();
+          throw new Error("updating question failed");
         }
       })
       .catch((error) => {
@@ -151,7 +150,7 @@ function SingleTopicView() {
           setTopicName(newTopicName);
           setEditNameActive(false);
         } else {
-          throw new Error();
+          throw new Error("updating topic failed");
         }
       })
       .catch((error) => {
@@ -217,4 +216,4 @@ function SingleTopicView() {
   );
 }
 
-export default SingleTopicView;
+export default QuizDetailView;

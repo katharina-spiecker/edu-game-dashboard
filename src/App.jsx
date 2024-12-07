@@ -13,7 +13,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<AllQuizzesView />} />
-          <Route path="edit-topic/:id" element={<QuizDetailView />} />
+          <Route path="quiz/:id" element={<QuizDetailView />} />
         </Route>
       </Routes>
     </BrowserRouter>

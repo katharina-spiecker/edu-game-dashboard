@@ -6,13 +6,13 @@ import TextArea from "../../components/TextArea.jsx";
 import HeadingContainer from "../../components/HeadingContainer.jsx";
 
 /**
- * Die Komponente generiert die Themenübersicht-Seite.
+ * Die Komponente generiert die Übersichtsseite für alle Quizze.
  *
  * @component
- * @returns {JSX.Element} Die OverviewTopicsView Komponente.
+ * @returns {JSX.Element} Die AllQuizzesView Komponente.
  */
-function OverviewTopicsView() {
-  const [topics, setTopics] = useState([]);
+function AllQuizzesView() {
+  const [quizzes, setQuizzes] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [newTopicName, setNewTopicName] = useState("");
 
@@ -22,21 +22,19 @@ function OverviewTopicsView() {
         if (response.ok) {
           return response.json();
         } else {
-          throw new Error("Failed to fetch topics");
+          throw new Error("Failed to fetch quizzes");
         }
       })
       .then((data) => {
-        console.log(data)
-        setTopics(data);
+        setQuizzes(data);
       })
       .catch((error) => console.error(error.message));
   }, []);
 
   /**
-   * Fügt dem topics array ein neues topic Objekt hinzu.
-   * Setzt leeren Array als Standardwert der quiz Eigenschaft.
+   * Fügt dem quizzes array ein neues quiz Objekt hinzu.
    */
-  function saveNewTopic() {
+  function saveNewQuiz() {
     fetch("http://localhost:3000/api/quizzes", {
       method: "POST",
       headers: {
@@ -52,13 +50,12 @@ function OverviewTopicsView() {
       })
       .then((data) => {
         // speichere die id von mongodb
-        setTopics((prevTopics) => {
-          return [...prevTopics, {
+        setQuizzes((prevQuizzes) => {
+          return [...prevQuizzes, {
             _id: data.insertedId,
             topic: newTopicName,
             gameCode: data.gameCode,
-            quizSize: 0,
-            quiz: []
+            quizSize: 0
           }];
         });
       })
@@ -78,13 +75,13 @@ function OverviewTopicsView() {
    */
   function deleteHandler(index) {
     // delete in frontend
-    setTopics((prevState) => {
+    setQuizzes((prevState) => {
       const updatedState = [...prevState];
       updatedState.splice(index, 1);
       return updatedState;
     });
 
-    fetch(`http://localhost:3000/api/quizzes/${topics[index]._id}`, { method: "DELETE" })
+    fetch(`http://localhost:3000/api/quizzes/${quizzes[index]._id}`, { method: "DELETE" })
       .then((res) => {
         if (!res.ok) {
           throw new Error();
@@ -99,9 +96,9 @@ function OverviewTopicsView() {
     <>
       <HeadingContainer>
         <span className="inline-block md:w-1/3">
-          {topics.length} {topics.length === 1 ? "Thema" : "Themen"}
+          {quizzes.length} {quizzes.length === 1 ? "Quiz" : "Quizze"}
         </span>
-        <h1 className="md:text-center text-2xl">Alle Themen</h1>
+        <h1 className="md:text-center text-2xl">Alle Quizze</h1>
         <div className="mt-2 md:mt-0 md:w-1/3 md:text-end">
           <PrimaryButton
             text="Neues Quizthema"
@@ -111,10 +108,10 @@ function OverviewTopicsView() {
       </HeadingContainer>
 
       <div className="grid grid-cold-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-        {topics.map((topic, index) => (
+        {quizzes.map((quiz, index) => (
           <QuizInfoCard
-            key={topic._id}
-            topic={topic}
+            key={quiz._id}
+            quiz={quiz}
             deleteHandler={() => deleteHandler(index)}
           />
         ))}
@@ -123,7 +120,7 @@ function OverviewTopicsView() {
         closeModal={resetModal}
         isOpen={modalIsOpen}
         saveText="Speichern"
-        saveHandler={saveNewTopic}
+        saveHandler={saveNewQuiz}
       >
         <TextArea
           label="Neues Thema"
@@ -135,4 +132,4 @@ function OverviewTopicsView() {
   );
 }
 
-export default OverviewTopicsView;
+export default AllQuizzesView;
