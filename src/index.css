@@ -17,21 +17,21 @@ main {
 }
 
 .topic-card__number {
-    left: 15px;
-    top: 15px;
-  }
-  
-  .card__edit-icon {
-    right: 15px;
-    top: 15px;
-  }
-  
-  .card__delete-icon {
-    right: 15px;
-    bottom: 15px;
-  }
-  
-  .topic-name-edit__icon {
-      right: -20px;
-      top: 8px;
-  }
+  left: 15px;
+  top: 15px;
+}
+
+.card__edit-icon {
+  right: 15px;
+  top: 15px;
+}
+
+.card__delete-icon {
+  right: 15px;
+  bottom: 15px;
+}
+
+.topic-name-edit__icon {
+  right: -20px;
+  top: 8px;
+}
